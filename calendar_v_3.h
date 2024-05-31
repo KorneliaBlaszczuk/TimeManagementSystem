@@ -207,6 +207,165 @@ public:
     }
 };
 
+// Function to edit an existing event
+void editEvent(Calendar& calendar) {
+    std::string name;
+    std::cout << "Enter the name of the event to edit: ";
+    std::cin.ignore();
+    std::getline(std::cin, name);
+
+    for (auto& event : calendar.events) {
+        if (event.getName() == name) {
+            std::string newName, location, input;
+            int year, month, day, hour, minute;
+            std::tm start = event.start;
+            std::tm end = event.end;
+            std::vector<std::string> attendees = event.attendees;
+
+            // Edit name
+            std::cout << "Enter new name (or press Enter to keep current): ";
+            std::getline(std::cin, newName);
+            if (!newName.empty()) event.setName(newName);
+
+            // Edit start date and time
+            std::cout << "Enter new start year (or press Enter to keep current): ";
+            std::getline(std::cin, input);
+            if (!input.empty()) start.tm_year = std::stoi(input) - 1900;
+
+            std::cout << "Enter new start month: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) start.tm_mon = std::stoi(input) - 1;
+
+            std::cout << "Enter new start day: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) start.tm_mday = std::stoi(input);
+
+            std::cout << "Enter new start hour: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) start.tm_hour = std::stoi(input);
+
+            std::cout << "Enter new start minute: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) start.tm_min = std::stoi(input);
+
+            event.start = start;
+
+            // Edit end date and time
+            std::cout << "Enter new end year (or press Enter to keep current): ";
+            std::getline(std::cin, input);
+            if (!input.empty()) end.tm_year = std::stoi(input) - 1900;
+
+            std::cout << "Enter new end month: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) end.tm_mon = std::stoi(input) - 1;
+
+            std::cout << "Enter new end day: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) end.tm_mday = std::stoi(input);
+
+            std::cout << "Enter new end hour: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) end.tm_hour = std::stoi(input);
+
+            std::cout << "Enter new end minute: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) end.tm_min = std::stoi(input);
+
+            event.end = end;
+
+            // Edit location
+            std::cout << "Enter new location (or press Enter to keep current): ";
+            std::getline(std::cin, location);
+            if (!location.empty()) event.location = location;
+
+            // Edit attendees
+            std::cout << "Enter new attendees (type 'done' to finish, or press Enter to keep current): ";
+            attendees.clear();
+            while (std::getline(std::cin, input) && input != "done") {
+                if (input.empty()) {
+                    attendees = event.attendees;
+                    break;
+                }
+                attendees.push_back(input);
+            }
+            if (!attendees.empty()) {
+                event.attendees = attendees;
+            }
+
+            std::cout << "Event updated successfully.\n";
+            return;
+        }
+    }
+
+    std::cout << "Event not found.\n";
+}
+
+
+// Function to edit an existing task
+void editTask(Calendar& calendar) {
+    std::string name;
+    std::cout << "Enter the name of the task to edit: ";
+    std::cin.ignore();
+    std::getline(std::cin, name);
+
+    for (auto& task : calendar.tasks) {
+        if (task.getName() == name) {
+            std::string newName, progressNote, input;
+            bool important;
+            int year, month, day, statusInt;
+            Task::Status status;
+            std::tm date = task.getDate();
+
+            // Edit name
+            std::cout << "Enter new name (or press Enter to keep current): ";
+            std::getline(std::cin, newName);
+            if (!newName.empty()) task.setName(newName);
+
+            // Edit date
+            std::cout << "Enter new year (or press Enter to keep current): ";
+            std::getline(std::cin, input);
+            if (!input.empty()) date.tm_year = std::stoi(input) - 1900;
+
+            std::cout << "Enter new month: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) date.tm_mon = std::stoi(input) - 1;
+
+            std::cout << "Enter new day: ";
+            std::getline(std::cin, input);
+            if (!input.empty()) date.tm_mday = std::stoi(input);
+
+            task.setDate(date);
+
+            // Edit importance
+            std::cout << "Is the task important? (1 for yes, 0 for no, or press Enter to keep current): ";
+            std::getline(std::cin, input);
+            if (!input.empty()) {
+                important = std::stoi(input);
+                task.important = important;
+            }
+
+            // Edit progress note
+            std::cout << "Enter new progress note (or press Enter to keep current): ";
+            std::getline(std::cin, progressNote);
+            if (!progressNote.empty()) task.progressNote = progressNote;
+
+            // Edit status
+            std::cout << "Enter new status (0 for pending, 1 for completed, or press Enter to keep current): ";
+            std::getline(std::cin, input);
+            if (!input.empty()) {
+                statusInt = std::stoi(input);
+                status = statusInt == 0 ? Task::PENDING : Task::COMPLETED;
+                task.progressStatus = status;
+            }
+
+            std::cout << "Task updated successfully.\n";
+            return;
+        }
+    }
+
+    std::cout << "Task not found.\n";
+}
+
 
 // Function to add a new event
 void addEvent(Calendar& calendar) {

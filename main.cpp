@@ -18,7 +18,9 @@ int main() {
         std::cout << "6 - Display tasks of the current week\n";
         std::cout << "7 - Display tasks of the current month\n";
         std::cout << "8 - Add a task\n";
-        std::cout << "9 - Exit\n";
+        std::cout << "9 - Edit an event\n";
+        std::cout << "10 - Edit a task\n";
+        std::cout << "11 - Exit\n";
         std::cout << "Choice: ";
         std::cin >> choice;
 
@@ -67,6 +69,12 @@ int main() {
                 addTask(calendar);
                 break;
             case 9:
+                editEvent(calendar);
+                break;
+            case 10:
+                editTask(calendar);
+                break;
+            case 11:
                 std::cout << "Goodbye!\n";
                 return 0;
             default:
