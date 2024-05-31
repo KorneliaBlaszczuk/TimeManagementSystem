@@ -205,6 +205,80 @@ public:
             task.print();
         }
     }
+
+    void selectMonthAndDisplayEvents(Calendar& calendar) {
+        int startYear, startMonth, endYear, endMonth;
+        std::string input;
+
+        // Get current date
+        std::tm currentDate = getCurrentDate();
+        int currentYear = currentDate.tm_year + 1900;
+        int currentMonth = currentDate.tm_mon + 1;
+
+        // Prompt for start month
+        std::cout << "Enter the start month (1-12) or press Enter for the current month: ";
+        std::getline(std::cin, input);
+        if (input.empty()) {
+            startMonth = currentMonth;
+        } else {
+            startMonth = std::stoi(input);
+            if (startMonth < 1 || startMonth > 12) {
+                std::cout << "Invalid start month. Please enter a number between 1 and 12.\n";
+                return;
+            }
+        }
+
+        // Prompt for start year
+        std::cout << "Enter the start year or press Enter for the current year: ";
+        std::getline(std::cin, input);
+        if (input.empty()) {
+            startYear = currentYear;
+        } else {
+            startYear = std::stoi(input);
+            if (startYear < 2000 || startYear > 2100) {
+                std::cout << "Invalid start year. Please enter a year between 2000 and 2100.\n";
+                return;
+            }
+        }
+
+        // Prompt for end month
+        std::cout << "Enter the end month (1-12) or press Enter for the current month: ";
+        std::getline(std::cin, input);
+        if (input.empty()) {
+            endMonth = currentMonth;
+        } else {
+            endMonth = std::stoi(input);
+            if (endMonth < 1 || endMonth > 12) {
+                std::cout << "Invalid end month. Please enter a number between 1 and 12.\n";
+                return;
+            }
+        }
+
+        // Prompt for end year
+        std::cout << "Enter the end year or press Enter for the current year: ";
+        std::getline(std::cin, input);
+        if (input.empty()) {
+            endYear = currentYear;
+        } else {
+            endYear = std::stoi(input);
+            if (endYear < 2000 || endYear > 2100) {
+                std::cout << "Invalid end year. Please enter a year between 2000 and 2100.\n";
+                return;
+            }
+        }
+
+        // Create tm structures for the start and end dates
+        std::tm monthStart = make_tm(startYear, startMonth, 1);
+        std::tm monthEnd = make_tm(endYear, endMonth, 1);
+
+        // Adjust monthEnd to the last day of the end month
+        monthEnd.tm_mon += 1; // Move to the next month
+        monthEnd.tm_mday = 0; // Set to the last day of the previous month
+        mktime(&monthEnd);
+
+        std::cout << "\nEvents from " << startMonth << "/" << startYear << " to " << endMonth << "/" << endYear << ":\n";
+        displayEventsInRange(calendar, monthStart, monthEnd);
+    }
 };
 
 
@@ -375,3 +449,4 @@ void getCurrentMonthRange(std::tm& monthStart, std::tm& monthEnd) {
     monthEnd.tm_mday = 0;
     mktime(&monthEnd);
 }
+
