@@ -2,6 +2,8 @@
 #include "calendar_v_3.h"
 
 int main() {
+    // @todo dodać w dodawaniu itp, że jeśli się kliknie enter i nic
+    // nie wpisze, to aktualna część data (jest to już w nr. 4)
     Calendar calendar;
     Interface interface;
 
@@ -20,7 +22,9 @@ int main() {
         std::cout << "7 - Display tasks of the current week\n";
         std::cout << "8 - Display tasks of the current month\n";
         std::cout << "9 - Add a task\n";
-        std::cout << "10 - Exit\n";
+        std::cout << "10 - Edit an event\n";
+        std::cout << "11 - Edit a task\n";
+        std::cout << "12 - Exit\n";
         std::cout << "Choice: ";
         std::cin >> choice;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -83,12 +87,18 @@ int main() {
                     addTask(calendar);
                     break;
                 case 10:
+                    editEvent(calendar);
+                    break;
+                case 11:
+                    editTask(calendar);
+                    break;
+                case 12:
                     std::cout << "Goodbye!\n";
                     return 0;
                 default:
                     std::cout << "Invalid choice. Please try again.\n";
                     break;
-            }}
+        }}
         catch (const std::exception& e) {
             std::cout << "Error: " << e.what() << "\n";
             // Clear cin state if an exception occurs
