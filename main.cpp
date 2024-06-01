@@ -1,6 +1,9 @@
+#include <limits>
 #include "calendar_v_3.h"
 
 int main() {
+    // @todo dodać w dodawaniu itp, że jeśli się kliknie enter i nic
+    // nie wpisze, to aktualna część data (jest to już w nr. 4)
     Calendar calendar;
     Interface interface;
 
@@ -13,16 +16,25 @@ int main() {
         std::cout << "1 - Display today's events\n";
         std::cout << "2 - Display events of the current week\n";
         std::cout << "3 - Display events of the current month\n";
-        std::cout << "4 - Add an event\n";
-        std::cout << "5 - Display today's tasks\n";
-        std::cout << "6 - Display tasks of the current week\n";
-        std::cout << "7 - Display tasks of the current month\n";
-        std::cout << "8 - Add a task\n";
-        std::cout << "9 - Edit an event\n";
-        std::cout << "10 - Edit a task\n";
-        std::cout << "11 - Exit\n";
+        std::cout << "4 - Select month for the display of events\n";
+        std::cout << "5 - Add an event\n";
+        std::cout << "6 - Display today's tasks\n";
+        std::cout << "7 - Display tasks of the current week\n";
+        std::cout << "8 - Display tasks of the current month\n";
+        std::cout << "9 - Add a task\n";
+        std::cout << "10 - Edit an event\n";
+        std::cout << "11 - Edit a task\n";
+        std::cout << "12 - Exit\n";
         std::cout << "Choice: ";
         std::cin >> choice;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (std::cin.fail()) {
+            std::cin.clear(); // clear error state
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+            std::cout << "Invalid input. Please enter a number between 1 and 10.\n";
+            continue;
+        }
 
         std::tm today = getCurrentDate();
         std::tm endOfDay = today;
@@ -33,53 +45,65 @@ int main() {
         std::tm weekStart, weekEnd;
         std::tm monthStart, monthEnd;
 
-        switch (choice) {
-            case 1:
-                std::cout << "\nEvents for today:\n";
-                interface.displayEventsInRange(calendar, today, endOfDay);
-                break;
-            case 2:
-                getCurrentWeekRange(weekStart, weekEnd);
-                std::cout << "\nEvents for the current week:\n";
-                interface.displayEventsInRange(calendar, weekStart, weekEnd);
-                break;
-            case 3:
-                getCurrentMonthRange(monthStart, monthEnd);
-                std::cout << "\nEvents for the current month:\n";
-                interface.displayEventsInRange(calendar, monthStart, monthEnd);
-                break;
-            case 4:
-                addEvent(calendar);
-                break;
-            case 5:
-                std::cout << "\nTasks for today:\n";
-                interface.displayTasksInRange(calendar, today, endOfDay);
-                break;
-            case 6:
-                getCurrentWeekRange(weekStart, weekEnd);
-                std::cout << "\nTasks for the current week:\n";
-                interface.displayTasksInRange(calendar, weekStart, weekEnd);
-                break;
-            case 7:
-                getCurrentMonthRange(monthStart, monthEnd);
-                std::cout << "\nTasks for the current month:\n";
-                interface.displayTasksInRange(calendar, monthStart, monthEnd);
-                break;
-            case 8:
-                addTask(calendar);
-                break;
-            case 9:
-                editEvent(calendar);
-                break;
-            case 10:
-                editTask(calendar);
-                break;
-            case 11:
-                std::cout << "Goodbye!\n";
-                return 0;
-            default:
-                std::cout << "Invalid choice. Please try again.\n";
-                break;
+        try {
+            switch (choice) {
+                case 1:
+                    std::cout << "\nEvents for today:\n";
+                    interface.displayEventsInRange(calendar, today, endOfDay);
+                    break;
+                case 2:
+                    getCurrentWeekRange(weekStart, weekEnd);
+                    std::cout << "\nEvents for the current week:\n";
+                    interface.displayEventsInRange(calendar, weekStart, weekEnd);
+                    break;
+                case 3:
+                    getCurrentMonthRange(monthStart, monthEnd);
+                    std::cout << "\nEvents for the current month:\n";
+                    interface.displayEventsInRange(calendar, monthStart, monthEnd);
+                    break;
+                case 4:
+                    // add month range, choosen by user (also with year of each)
+                    // if year wasnt given then
+                    interface.selectMonthAndDisplayEvents(calendar);
+                    break;
+                case 5:
+                    addEvent(calendar);
+                    break;
+                case 6:
+                    std::cout << "\nTasks for today:\n";
+                    interface.displayTasksInRange(calendar, today, endOfDay);
+                    break;
+                case 7:
+                    getCurrentWeekRange(weekStart, weekEnd);
+                    std::cout << "\nTasks for the current week:\n";
+                    interface.displayTasksInRange(calendar, weekStart, weekEnd);
+                    break;
+                case 8:
+                    getCurrentMonthRange(monthStart, monthEnd);
+                    std::cout << "\nTasks for the current month:\n";
+                    interface.displayTasksInRange(calendar, monthStart, monthEnd);
+                    break;
+                case 9:
+                    addTask(calendar);
+                    break;
+                case 10:
+                    editEvent(calendar);
+                    break;
+                case 11:
+                    editTask(calendar);
+                    break;
+                case 12:
+                    std::cout << "Goodbye!\n";
+                    return 0;
+                default:
+                    std::cout << "Invalid choice. Please try again.\n";
+                    break;
+        }}
+        catch (const std::exception& e) {
+            std::cout << "Error: " << e.what() << "\n";
+            // Clear cin state if an exception occurs
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
 
