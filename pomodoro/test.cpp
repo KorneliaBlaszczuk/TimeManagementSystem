@@ -1,7 +1,7 @@
 #include "pomodoro.h"
+#include <iostream>
 int main()
 {
-    Countdown cd(3);
-    cd.timer();
+    PomodoroRun();
     return 0;
 }
