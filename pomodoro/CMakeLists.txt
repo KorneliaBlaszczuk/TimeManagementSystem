@@ -13,5 +13,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 set(PROJECT_SOURCES pomodoro.h pomodoro.cpp)
-
 add_executable(pomodoro test.cpp ${PROJECT_SOURCES})
+
+add_executable(testGoogle testPomodoro.cpp ${PROJECT_SOURCES})
+target_link_libraries(testGoogle PUBLIC gtest_main)
