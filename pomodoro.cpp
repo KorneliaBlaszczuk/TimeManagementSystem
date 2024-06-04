@@ -6,7 +6,11 @@
 #include <thread>
 #include <chrono>
 
-Countdown::Countdown(int min) : hours(min / 60), minutes(min % 60), seconds(0){};
+Countdown::Countdown(int min) : hours(min / 60), minutes(min % 60), seconds(0)
+{
+    if (hours <= 0 or minutes <= 0)
+        throw std::invalid_argument("Timer cannot be set to not positive value.");
+};
 
 void Countdown::timer()
 {
@@ -97,9 +101,9 @@ void Block::displayTimer()
     std::cout << std::setfill(' ') << std::setw(50) << " --------------------------" << std::endl;
 };
 
-Pomodoro::Pomodoro(unsigned int t, int dur, int br) : times(t), block(dur), breaks(br)
+Pomodoro::Pomodoro(unsigned int t, unsigned int dur, unsigned int br) : times(t), block(dur), breaks(br)
 {
-    if (breaks <= 0, block <= 0)
+    if (breaks == 0 or block == 0)
     {
         throw std::invalid_argument("Time of session blocks and breaks need to be positive.");
     }
@@ -113,15 +117,26 @@ void Pomodoro::start()
 {
     for (int i = 0; i < times; i++)
     {
-        Countdown *ses_ptr = new Block(block);
+        Countdown *ses_ptr = new Block((int)block);
         sequence.push_back(ses_ptr);
         if (i != times)
         {
-            Countdown *br_ptr = new Break(breaks);
+            Countdown *br_ptr = new Break((int)breaks);
             sequence.push_back(br_ptr);
         }
     }
 };
+
+void Pomodoro::clear_sequence()
+{
+    // deleting objects connected to ptr
+    for (auto ptr : sequence)
+    {
+        delete ptr;
+    }
+    // clearing sequence
+    sequence.clear();
+}
 
 int Pomodoro::stop()
 {
@@ -138,6 +153,11 @@ int Pomodoro::stop()
         std::cin >> choice;
     };
     return choice;
+};
+
+std::string Pomodoro::getInfo()
+{
+    return "r " + std::to_string(times) + " bl " + std::to_string(block) + " br " + std::to_string(breaks);
 };
 
 void Pomodoro::go()
@@ -189,6 +209,8 @@ void Pomodoro::go()
             i++;
         }
         std::cout << "You finished your Pomodoro session. Good job!";
+        // deleting already done sequence
+        clear_sequence();
     }
     return;
 };
