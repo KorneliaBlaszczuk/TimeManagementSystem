@@ -41,26 +41,31 @@ public:
 
 class Pomodoro
 /*
-This class takes care of creating a pomodoro sesion as a hole blocks and breaks.
+This class takes care of creating a pomodoro session as a hole blocks and breaks.
 */
 {
     // amount of repetition
     unsigned int times;
     // how long is the session block
-    int block;
+    unsigned int block;
     // how long is the break
-    int breaks;
+    unsigned int breaks;
     std::vector<Countdown *> sequence;
 
-    // function that creates a sequnece of block sessions and breaks
+    // function that creates a sequence of block sessions and breaks
     void start();
-
-public:
-    Pomodoro(unsigned int t, int dur, int br);
-    // function that starts the squance as a whole
-    void go();
     // function that allows user to stop sequence
     int stop();
+    // method to clear already done sequence
+    void clear_sequence();
+
+public:
+    Pomodoro(unsigned int t, unsigned int dur, unsigned int br);
+    // function that starts the squance as a whole
+    void go();
+    // function returning basic info about set pomodoro mode
+    // returns r (repetitions),bl(duration of block), br(duration of break)
+    std::string getInfo();
 };
 
 // function use to run predefined pomodoro mode in project
