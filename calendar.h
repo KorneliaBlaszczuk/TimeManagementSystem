@@ -22,7 +22,7 @@ protected:
     std::tm date;
 
 public:
-    Plan(std::string name, std::tm date)
+    Plan(std::string const &name, std::tm const &date)
         : name(name), date(date) {}
 
     std::string getName() const;
@@ -43,7 +43,7 @@ class Event : public Plan
     std::vector<std::string> attendees;
 
 public:
-    Event(std::string name, std::tm start, std::tm end, std::string location, std::vector<std::string> attendees)
+    Event(std::string const &name, std::tm const &start, std::tm const &end, std::string const &location, std::vector<std::string> const &attendees)
         : Plan(name, start), start(start), end(end), location(location), attendees(attendees) {}
 
     void print() const;
@@ -67,7 +67,7 @@ public:
         PENDING,
         COMPLETED
     };
-    Task(std::string name, std::tm date, bool important, std::string progressNote, Status progressStatus)
+    Task(std::string const &name, std::tm const &date, bool const &important, std::string const &progressNote, Status progressStatus)
         : Plan(name, date), important(important), progressNote(progressNote), progressStatus(progressStatus) {}
 
     void print() const;
