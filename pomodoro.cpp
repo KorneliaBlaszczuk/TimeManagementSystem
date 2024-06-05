@@ -8,7 +8,7 @@
 
 Countdown::Countdown(int min) : hours(min / 60), minutes(min % 60), seconds(0)
 {
-    if (hours <= 0 or minutes <= 0)
+    if (hours <= 0 and minutes <= 0)
         throw std::invalid_argument("Timer cannot be set to not positive value.");
 };
 
