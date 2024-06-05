@@ -2,6 +2,7 @@
 #include <sstream>
 #include "calendar_v_3.h"
 
+
 TEST(EventTest, EventPrintsCorrectly) {
     std::tm startEvent = make_tm(2024, 6, 5, 10, 0);
     std::tm endEvent = make_tm(2024, 6, 5, 12, 0);
@@ -18,12 +19,12 @@ TEST(EventTest, EventPrintsCorrectly) {
 
 // Testy dla klasy Task
 TEST(TaskTest, TaskPrintsCorrectly) {
-    std::tm taskDate = make_tm(2024, 6, 5);
+    std::tm taskDate = make_tm(2024, 6, 5, 12, 0);
     Task task("Finish Report", taskDate, true, "Work in progress", Task::PENDING);
 
     std::ostringstream output;
     task.print();
-    std::string expectedOutput = "2024-06-05          Finish Report       Important           Pending             Work in progress\n";
+    std::string expectedOutput = "2024-06-05 12:00    Finish Report       Important           Pending             Work in progress\n";
     testing::internal::CaptureStdout();
     task.print();
     std::string outputStr = testing::internal::GetCapturedStdout();
