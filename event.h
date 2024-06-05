@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <ctime>
+#include "functions.h"
 
 // Event class
 class Event : public Plan

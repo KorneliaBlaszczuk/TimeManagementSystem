@@ -3,7 +3,7 @@
 #include <iostream>
 #include <ctime>
 
-ReminderTODO::ReminderTODO(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat) : Plan(name_ar, date), description(details), repetition(repeat)
+Reminder::Reminder(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat) : Plan(name_ar, date), description(details), repetition(repeat)
 {
     if (name == "")
     {
@@ -11,7 +11,7 @@ ReminderTODO::ReminderTODO(std::string const &name_ar, std::tm const &date, std:
     }
 };
 
-void ReminderTODO::print()
+void Reminder::print()
 {
     char dateBuffer[20];
     strftime(dateBuffer, 20, "%Y-%m-%d %H:%M", &date);
@@ -22,23 +22,23 @@ void ReminderTODO::print()
               << description << std::endl;
 };
 
-void ReminderTODO::setDescription(std::string const &new_description)
+void Reminder::setDescription(std::string const &new_description)
 {
     if (new_description != "")
         description = new_description;
 }
 
-void ReminderTODO::setRepetition(Repetition new_repetition)
+void Reminder::setRepetition(Repetition new_repetition)
 {
     repetition = new_repetition;
 }
 
-std::string ReminderTODO::getDetails() const
+std::string Reminder::getDetails() const
 {
     return description;
 }
 
-std::string ReminderTODO::getRepetitions() const
+std::string Reminder::getRepetitions() const
 {
     switch (repetition)
     {
@@ -61,7 +61,7 @@ std::string ReminderTODO::getRepetitions() const
     };
 }
 
-void ReminderTODO::changeDate(std::tm &time_now)
+void Reminder::changeDate(std::tm &time_now)
 {
     if (tm_to_time_t(time_now) > tm_to_time_t(date))
     {

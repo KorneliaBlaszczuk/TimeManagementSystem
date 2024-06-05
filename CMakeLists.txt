@@ -12,7 +12,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_SOURCES calendar.h calendar.cpp reminder.h reminder.cpp pomodoro.h pomodoro.cpp event.h event.cpp task.h task.cpp plan.h plan.cpp interface.h interface.cpp)
+set(PROJECT_SOURCES reminder.h reminder.cpp calendar.h calendar.cpp pomodoro.h pomodoro.cpp event.h event.cpp task.h task.cpp plan.h plan.cpp interface.h interface.cpp functions.h functions.cpp)
 
 add_executable(calendar main.cpp ${PROJECT_SOURCES})
 

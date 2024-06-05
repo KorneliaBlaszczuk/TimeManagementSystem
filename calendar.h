@@ -5,15 +5,7 @@
 #include "task.h"
 #include "reminder.h"
 #include "plan.h"
-
-// Helper function o create std::tm from year, month, day, hour, and minute
-std::tm make_tm(int year, int month, int day, int hour = 0, int minute = 0);
-
-// Helper function to convert std::tm to std::time_t
-std::time_t tm_to_time_t(const std::tm &t);
-
-// Function to get current date
-std::tm getCurrentDate();
+#include "functions.h"
 
 // Calendar class
 class Calendar
@@ -21,7 +13,7 @@ class Calendar
 public:
     std::vector<Event> events;
     std::vector<Task> tasks;
-    // std::vector<ReminderTODO> reminders;
+    std::vector<Reminder> reminders;
 
     void addEvent(const Event &event);
 
