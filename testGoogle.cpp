@@ -1,9 +1,16 @@
 #include <gtest/gtest.h>
 #include <sstream>
+#include "task.h"
+#include "event.h"
+#include "reminder.h"
 #include "calendar.h"
+#include "interface.h"
+#include "task.h"
+#include "event.h"
+#include "reminder.h"
 
-
-TEST(EventTest, EventPrintsCorrectly) {
+TEST(EventTest, EventPrintsCorrectly)
+{
     std::tm startEvent = make_tm(2024, 6, 5, 10, 0);
     std::tm endEvent = make_tm(2024, 6, 5, 12, 0);
     Event event("Meeting", startEvent, endEvent, "Conference Room", {"Alice", "Bob"});
@@ -46,7 +53,8 @@ TEST(EventTest, set)
     ASSERT_EQ(event.getName(), "Task");
 }
 
-TEST(EventTest, ConstructorAndAccessors) {
+TEST(EventTest, ConstructorAndAccessors)
+{
     std::tm start = {};
     start.tm_year = 2023 - 1900;
     start.tm_mon = 5 - 1;
@@ -72,7 +80,8 @@ TEST(EventTest, ConstructorAndAccessors) {
     EXPECT_EQ(event.getAttendees(), attendees);
 }
 
-TEST(EventTest, SetAndGetStart) {
+TEST(EventTest, SetAndGetStart)
+{
     std::tm start = {};
     std::tm newStart = {};
     start.tm_year = 2023 - 1900;
@@ -85,7 +94,8 @@ TEST(EventTest, SetAndGetStart) {
     EXPECT_EQ(event.getStart().tm_year, 2024 - 1900);
 }
 
-TEST(EventTest, SetAndGetEnd) {
+TEST(EventTest, SetAndGetEnd)
+{
     std::tm end = {};
     std::tm newEnd = {};
     end.tm_year = 2023 - 1900;
@@ -98,7 +108,8 @@ TEST(EventTest, SetAndGetEnd) {
     EXPECT_EQ(event.getEnd().tm_year, 2024 - 1900);
 }
 
-TEST(EventTest, SetAndGetLocation) {
+TEST(EventTest, SetAndGetLocation)
+{
     std::tm start = {};
     std::tm end = {};
     std::vector<std::string> attendees = {};
@@ -109,8 +120,8 @@ TEST(EventTest, SetAndGetLocation) {
     EXPECT_EQ(event.getLocation(), "New Location");
 }
 
-
-TEST(EventTest, SetAndGetAttendees) {
+TEST(EventTest, SetAndGetAttendees)
+{
     std::tm start = {};
     std::tm end = {};
     std::vector<std::string> attendees = {"John Doe", "Jane Smith"};
@@ -122,7 +133,8 @@ TEST(EventTest, SetAndGetAttendees) {
     EXPECT_EQ(event.getAttendees(), newAttendees);
 }
 
-TEST(TaskTest, TaskPrintsCorrectly) {
+TEST(TaskTest, TaskPrintsCorrectly)
+{
     std::tm taskDate = make_tm(2024, 6, 5);
     Task task("Finish Report", taskDate, true, "Work in progress", Task::PENDING);
 
@@ -135,7 +147,8 @@ TEST(TaskTest, TaskPrintsCorrectly) {
     ASSERT_EQ(outputStr, expectedOutput);
 }
 
-TEST(TaskTest, ConstructorAndAccessors) {
+TEST(TaskTest, ConstructorAndAccessors)
+{
     std::tm date = {};
     date.tm_year = 2023 - 1900;
     date.tm_mon = 5 - 1;
@@ -152,7 +165,8 @@ TEST(TaskTest, ConstructorAndAccessors) {
     EXPECT_EQ(task.getProgressStatus(), Task::PENDING);
 }
 
-TEST(TaskTest, SetAndGetImportant) {
+TEST(TaskTest, SetAndGetImportant)
+{
     std::tm date = {};
     Task task("Test Task", date, false, "In Progress", Task::PENDING);
 
@@ -163,7 +177,8 @@ TEST(TaskTest, SetAndGetImportant) {
     EXPECT_FALSE(task.getImportant());
 }
 
-TEST(TaskTest, SetAndGetProgressNote) {
+TEST(TaskTest, SetAndGetProgressNote)
+{
     std::tm date = {};
     Task task("Test Task", date, false, "Initial Note", Task::PENDING);
 
@@ -171,7 +186,8 @@ TEST(TaskTest, SetAndGetProgressNote) {
     EXPECT_EQ(task.getProgressNote(), "Updated Note");
 }
 
-TEST(TaskTest, AddAndGetSubtasks) {
+TEST(TaskTest, AddAndGetSubtasks)
+{
     std::tm date = {};
     Task task("Main Task", date, false, "In Progress", Task::PENDING);
     Task subtask1("Subtask 1", date, false, "In Progress", Task::PENDING);
@@ -186,7 +202,8 @@ TEST(TaskTest, AddAndGetSubtasks) {
     EXPECT_EQ(subtasks[1].getName(), "Subtask 2");
 }
 
-TEST(TaskTest, SetAndGetStatus) {
+TEST(TaskTest, SetAndGetStatus)
+{
     std::tm date = {};
     Task task("Test Task", date, false, "In Progress", Task::PENDING);
 
@@ -197,7 +214,8 @@ TEST(TaskTest, SetAndGetStatus) {
     EXPECT_EQ(task.getProgressStatus(), Task::PENDING);
 }
 
-TEST(CalendarTest, AddingAndFilteringEvents) {
+TEST(CalendarTest, AddingAndFilteringEvents)
+{
     Calendar calendar;
 
     std::tm startEvent1 = make_tm(2024, 6, 5, 10, 0);
@@ -212,13 +230,15 @@ TEST(CalendarTest, AddingAndFilteringEvents) {
     calendar.addEvent(event2);
 
     std::ostringstream output;
-    for(const auto& event : calendar.filterEvents(make_tm(2024, 6, 5), make_tm(2024, 6, 6))) {
+    for (const auto &event : calendar.filterEvents(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
+    {
         event.print();
     }
     std::string expectedOutput = "Meeting             2024-06-05 10:00    2024-06-05 12:00    Conference Room     Attendees: Alice Bob \n";
     testing::internal::CaptureStdout();
     std::string outputStr = "";
-    for(const auto& event : calendar.filterEvents(make_tm(2024, 6, 5), make_tm(2024, 6, 6))) {
+    for (const auto &event : calendar.filterEvents(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
+    {
         event.print();
         outputStr += testing::internal::GetCapturedStdout();
     }
@@ -226,7 +246,8 @@ TEST(CalendarTest, AddingAndFilteringEvents) {
     ASSERT_EQ(outputStr, expectedOutput);
 }
 
-TEST(CalendarTest, AddingAndFilteringTasks) {
+TEST(CalendarTest, AddingAndFilteringTasks)
+{
     Calendar calendar;
 
     std::tm taskDate1 = make_tm(2024, 6, 5);
@@ -239,19 +260,22 @@ TEST(CalendarTest, AddingAndFilteringTasks) {
     calendar.addTask(task2);
 
     std::ostringstream output;
-    for(const auto& task : calendar.filterTasks(make_tm(2024, 6, 5), make_tm(2024, 6, 6))) {
+    for (const auto &task : calendar.filterTasks(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
+    {
         task.print();
     }
     std::string expectedOutput = "2024-06-05          Finish Report       Important           Pending             Work in progress\n";
     testing::internal::CaptureStdout();
-    for(const auto& task : calendar.filterTasks(make_tm(2024, 6, 5), make_tm(2024, 6, 6))) {
+    for (const auto &task : calendar.filterTasks(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
+    {
         task.print();
     }
     std::string outputStr = testing::internal::GetCapturedStdout();
     ASSERT_EQ(outputStr, expectedOutput);
 }
 
-TEST(CalendarTest, AddEvent) {
+TEST(CalendarTest, AddEvent)
+{
     Calendar calendar;
     std::tm start = make_tm(2023, 6, 10, 10, 30);
     std::tm end = make_tm(2023, 6, 10, 12, 0);
@@ -263,7 +287,8 @@ TEST(CalendarTest, AddEvent) {
 }
 
 // Test dodawania zadań do kalendarza
-TEST(CalendarTest, AddTask) {
+TEST(CalendarTest, AddTask)
+{
     Calendar calendar;
     std::tm date = make_tm(2023, 6, 10);
     Task task("Finish Report", date, true, "In Progress", Task::PENDING);
@@ -274,7 +299,8 @@ TEST(CalendarTest, AddTask) {
 }
 
 // Test filtrowania wydarzeń w danym zakresie
-TEST(CalendarTest, FilterEvents) {
+TEST(CalendarTest, FilterEvents)
+{
     Calendar calendar;
     std::tm start1 = make_tm(2023, 6, 10, 10, 30);
     std::tm end1 = make_tm(2023, 6, 10, 12, 0);
@@ -294,8 +320,8 @@ TEST(CalendarTest, FilterEvents) {
     EXPECT_EQ(filteredEvents[0].getName(), "Meeting");
 }
 
-
-TEST(CalendarTest, FilterTasks) {
+TEST(CalendarTest, FilterTasks)
+{
     Calendar calendar;
     std::tm date1 = make_tm(2023, 6, 10);
     Task task1("Finish Report", date1, true, "In Progress", Task::PENDING);
@@ -313,7 +339,8 @@ TEST(CalendarTest, FilterTasks) {
     EXPECT_EQ(filteredTasks[0].getName(), "Finish Report");
 }
 
-TEST(CalendarTest, FilterEventsBoundary) {
+TEST(CalendarTest, FilterEventsBoundary)
+{
     Calendar calendar;
     std::tm start = make_tm(2023, 6, 10, 10, 0);
     std::tm end = make_tm(2023, 6, 10, 11, 0);
@@ -327,7 +354,8 @@ TEST(CalendarTest, FilterEventsBoundary) {
     ASSERT_EQ(filteredEvents.size(), 0);
 }
 
-TEST(CalendarTest, FilterTasksBoundary) {
+TEST(CalendarTest, FilterTasksBoundary)
+{
     Calendar calendar;
     std::tm date = make_tm(2023, 6, 10);
     Task task("Finish Report", date, true, "In Progress", Task::PENDING);
@@ -341,11 +369,10 @@ TEST(CalendarTest, FilterTasksBoundary) {
     EXPECT_EQ(filteredTasks[0].getName(), "Finish Report");
 }
 
-
 TEST(help_funct, make_tm_)
 {
     std::tm d1 = make_tm(2024, 6, 5, 12, 10);
-    ASSERT_EQ(d1.tm_year, 2024-1900);
+    ASSERT_EQ(d1.tm_year, 2024 - 1900);
     ASSERT_EQ(d1.tm_mon, 5);
     ASSERT_EQ(d1.tm_mday, 5);
     ASSERT_EQ(d1.tm_hour, 12);

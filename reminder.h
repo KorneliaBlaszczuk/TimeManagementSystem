@@ -3,7 +3,7 @@
 #include "plan.h"
 #include "calendar.h"
 
-class Reminder : public Plan
+class ReminderTODO : public Plan
 {
     enum Repetition
     {
@@ -22,7 +22,7 @@ class Reminder : public Plan
     void changeDate(std::tm &time_now);
 
 public:
-    Reminder(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat);
+    ReminderTODO(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat);
     // method to return information from reminder
     void print();
     // method to change additional information for reminder

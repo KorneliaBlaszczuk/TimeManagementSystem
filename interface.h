@@ -1,5 +1,10 @@
 #pragma once
 #include "calendar.h"
+#include "event.h"
+#include "task.h"
+#include "reminder.h"
+#include "pomodoro.h"
+#include "plan.h"
 
 // Interface class
 class Interface
