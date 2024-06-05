@@ -12,7 +12,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_SOURCES calendar_v_3.h)
+set(PROJECT_SOURCES calendar_v_3.h calendar_v_3.cpp)
 
 add_executable(calendar main.cpp ${PROJECT_SOURCES} )
 

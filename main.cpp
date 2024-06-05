@@ -4,7 +4,6 @@
 #include <ctime>
 #include "calendar_v_3.h"
 
-
 int main() {
     Calendar calendar;
     Interface interface;
