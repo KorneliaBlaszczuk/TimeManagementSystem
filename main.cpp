@@ -1,12 +1,13 @@
+#include <iostream>
 #include <limits>
+#include <stdexcept>
+#include <ctime>
 #include "calendar_v_3.h"
 
+
 int main() {
-    // @todo dodać w dodawaniu itp, że jeśli się kliknie enter i nic
-    // nie wpisze, to aktualna część data (jest to już w nr. 4)
     Calendar calendar;
     Interface interface;
-
 
     std::cout << "Welcome back\n";
 
@@ -32,7 +33,7 @@ int main() {
         if (std::cin.fail()) {
             std::cin.clear(); // clear error state
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-            std::cout << "Invalid input. Please enter a number between 1 and 10.\n";
+            std::cout << "Invalid input. Please enter a number between 1 and 12.\n";
             continue;
         }
 
@@ -62,12 +63,10 @@ int main() {
                     interface.displayEventsInRange(calendar, monthStart, monthEnd);
                     break;
                 case 4:
-                    // add month range, choosen by user (also with year of each)
-                    // if year wasnt given then
                     interface.selectMonthAndDisplayEvents(calendar);
                     break;
                 case 5:
-                    addEvent(calendar);
+                    interface.addEvent(calendar);
                     break;
                 case 6:
                     std::cout << "\nTasks for today:\n";
@@ -84,13 +83,13 @@ int main() {
                     interface.displayTasksInRange(calendar, monthStart, monthEnd);
                     break;
                 case 9:
-                    addTask(calendar);
+                    interface.addTask(calendar);
                     break;
                 case 10:
-                    editEvent(calendar);
+                    interface.editEvent(calendar);
                     break;
                 case 11:
-                    editTask(calendar);
+                    interface.editTask(calendar);
                     break;
                 case 12:
                     std::cout << "Goodbye!\n";
@@ -98,8 +97,8 @@ int main() {
                 default:
                     std::cout << "Invalid choice. Please try again.\n";
                     break;
-        }}
-        catch (const std::exception& e) {
+            }
+        } catch (const std::exception& e) {
             std::cout << "Error: " << e.what() << "\n";
             // Clear cin state if an exception occurs
             std::cin.clear();
