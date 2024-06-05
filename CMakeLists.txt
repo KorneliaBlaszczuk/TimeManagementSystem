@@ -12,9 +12,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_SOURCES calendar.h calendar.cpp)
+set(PROJECT_SOURCES calendar.h calendar.cpp reminder.h reminder.cpp pomodoro.h pomodoro.cpp event.h event.cpp task.h task.cpp plan.h plan.cpp interface.h interface.cpp)
 
 add_executable(calendar main.cpp ${PROJECT_SOURCES})
 
-add_executable(testGoogle testGoogle.cpp ${PROJECT_SOURCES})
+add_executable(testGoogle testGoogle.cpp testPomodoro.cpp testReminder.cpp ${PROJECT_SOURCES})
 target_link_libraries(testGoogle PUBLIC gtest_main)

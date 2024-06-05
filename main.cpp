@@ -3,6 +3,10 @@
 #include <stdexcept>
 #include <ctime>
 #include "calendar.h"
+#include "interface.h"
+#include "task.h"
+#include "event.h"
+#include "reminder.h"
 
 int main()
 {

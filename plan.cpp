@@ -1,4 +1,6 @@
 #include "plan.h"
+#include <ctime>
+#include <string>
 
 std::string Plan::getName() const
 {
@@ -14,4 +16,9 @@ void Plan::setName(const std::string &newName)
 {
     if (newName != "")
         name = newName;
+}
+
+void Plan::setDate(const std::tm &newDate)
+{
+    date = newDate;
 }
