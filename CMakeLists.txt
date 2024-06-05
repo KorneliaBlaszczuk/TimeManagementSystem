@@ -7,15 +7,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include(FetchContent)
 FetchContent_Declare(
    googletest
-   GIT_REPOSITORY      https://github.com/google/googletest.git
+   GIT_REPOSITORY https://github.com/google/googletest.git
    GIT_TAG main
 )
 FetchContent_MakeAvailable(googletest)
 
-set(PROJECT_SOURCES calendar_v_3.h calendar_v_3.cpp)
+set(PROJECT_SOURCES calendar.h calendar.cpp)
 
-add_executable(calendar main.cpp ${PROJECT_SOURCES} )
+add_executable(calendar main.cpp ${PROJECT_SOURCES})
 
 add_executable(testGoogle testGoogle.cpp ${PROJECT_SOURCES})
 target_link_libraries(testGoogle PUBLIC gtest_main)
-
