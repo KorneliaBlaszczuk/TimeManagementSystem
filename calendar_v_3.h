@@ -4,36 +4,9 @@
 #include <iomanip>
 #include <ctime>
 
-// Helper function to create std::tm from year, month, day, hour, and minute
-std::tm make_tm(int year, int month, int day, int hour = 0, int minute = 0) {
-    std::tm t = {};
-    t.tm_year = year - 1900;
-    t.tm_mon = month - 1;
-    t.tm_mday = day;
-    t.tm_hour = hour;
-    t.tm_min = minute;
-    t.tm_sec = 0;
-    return t;
-}
-
-// Helper function to convert std::tm to std::time_t
-std::time_t tm_to_time_t(const std::tm& t) {
-    std::tm temp = t;
-    return mktime(&temp);
-}
-
-// Function to get current date
-std::tm getCurrentDate() {
-    std::time_t t = std::time(nullptr);
-    std::tm currentTime = *std::localtime(&t);
-    currentTime.tm_hour = 0;
-    currentTime.tm_min = 0;
-    currentTime.tm_sec = 0;
-    return currentTime;
-}
-
 // Plan class
-class Plan {
+class Plan
+{
 protected:
     std::string name;
     std::tm date;
@@ -42,49 +15,37 @@ public:
     Plan(std::string name, std::tm date)
         : name(name), date(date) {}
 
-    std::string getName() const {
-        return name;
-    }
+    std::string getName() const;
 
-    std::tm getDate() const {
-        return date;
-    }
+    std::tm getDate() const;
 
-    void setName(const std::string& newName) {
-        name = newName;
-    }
+    void setName(const std::string& newName);
 
-    void setDate(const std::tm& newDate) {
-        date = newDate;
-    }
+    void setDate(const std::tm& newDate);
 };
 
 // Event class
-class Event : public Plan {
-public:
+class Event : public Plan
+{
     std::tm start;
     std::tm end;
     std::string location;
     std::vector<std::string> attendees;
-
+public:
     Event(std::string name, std::tm start, std::tm end, std::string location, std::vector<std::string> attendees)
         : Plan(name, start), start(start), end(end), location(location), attendees(attendees) {}
 
-    void print() const {
-        char startBuffer[20];
-        char endBuffer[20];
-        strftime(startBuffer, 20, "%Y-%m-%d %H:%M", &start);
-        strftime(endBuffer, 20, "%Y-%m-%d %H:%M", &end);
+    void print() const;
 
-        std::cout << std::left << std::setw(20) << name<<std::setw(20)<<startBuffer
-                  << std::setw(20) << endBuffer
-                  << std::setw(20) << location
-                  << "Attendees: ";
-        for (const auto& attendee : attendees) {
-            std::cout << attendee << " ";
-        }
-        std::cout << std::endl;
-    }
+    std::tm getStart() const;
+    void setStart(const std::tm& newDate);
+    std::tm getEnd() const;
+    void setEnd(const std::tm& newDate);
+    std::string getLocation() const;
+    void setLocation(const std::string& newLoc);
+    std::vector<std::string> getAttendees() const;
+    void setAttendees(const std::vector<std::string>& newAttendees);
+
 };
 
 // Task class
@@ -138,8 +99,8 @@ public:
         std::time_t start_time = tm_to_time_t(start);
         std::time_t end_time = tm_to_time_t(end);
         for (const auto& event : events) {
-            std::time_t event_start_time = tm_to_time_t(event.start);
-            std::time_t event_end_time = tm_to_time_t(event.end);
+            std::time_t event_start_time = tm_to_time_t(event.getStart());
+            std::time_t event_end_time = tm_to_time_t(event.getEnd());
             if (difftime(event_start_time, end_time) <= 0 && difftime(event_end_time, start_time) >= 0) {
                 result.push_back(event);
             }
@@ -291,9 +252,9 @@ public:
             if (event.getName() == name) {
                 std::string newName, location, input;
                 int year, month, day, hour, minute;
-                std::tm start = event.start;
-                std::tm end = event.end;
-                std::vector<std::string> attendees = event.attendees;
+                std::tm start = event.getStart();
+                std::tm end = event.getEnd();
+                std::vector<std::string> attendees = event.getAttendees();
 
                 // Edit name
                 std::cout << "Enter new name (or press Enter to keep current): ";
@@ -321,7 +282,7 @@ public:
                 std::getline(std::cin, input);
                 if (!input.empty()) start.tm_min = std::stoi(input);
 
-                event.start = start;
+                event.setStart(start);
 
                 // Edit end date and time
                 std::cout << "Enter new end year (or press Enter to keep current): ";
@@ -344,25 +305,25 @@ public:
                 std::getline(std::cin, input);
                 if (!input.empty()) end.tm_min = std::stoi(input);
 
-                event.end = end;
+                event.setEnd(end);
 
                 // Edit location
                 std::cout << "Enter new location (or press Enter to keep current): ";
                 std::getline(std::cin, location);
-                if (!location.empty()) event.location = location;
+                if (!location.empty()) event.setLocation(location);
 
                 // Edit attendees
                 std::cout << "Enter new attendees (type 'done' to finish, or press Enter to keep current): ";
                 attendees.clear();
                 while (std::getline(std::cin, input) && input != "done") {
                     if (input.empty()) {
-                        attendees = event.attendees;
+                        attendees = event.getAttendees();
                         break;
                     }
                     attendees.push_back(input);
                 }
                 if (!attendees.empty()) {
-                    event.attendees = attendees;
+                    event.setAttendees(attendees);
                 }
 
                 std::cout << "Event updated successfully.\n";
