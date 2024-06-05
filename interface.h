@@ -5,6 +5,7 @@
 #include "reminder.h"
 #include "pomodoro.h"
 #include "plan.h"
+#include "functions.h"
 
 // Interface class
 class Interface

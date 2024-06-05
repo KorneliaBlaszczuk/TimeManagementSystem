@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include "plan.h"
-#include "calendar.h"
+#include "functions.h"
 
-class ReminderTODO : public Plan
+class Reminder : public Plan
 {
     enum Repetition
     {
@@ -22,7 +22,7 @@ class ReminderTODO : public Plan
     void changeDate(std::tm &time_now);
 
 public:
-    ReminderTODO(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat);
+    Reminder(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat);
     // method to return information from reminder
     void print();
     // method to change additional information for reminder
