@@ -23,4 +23,6 @@ public:
     void setName(const std::string &newName);
 
     void setDate(const std::tm &newDate);
+
+    static bool startsWith(const std::string& line, const std::string& prefix);
 };
