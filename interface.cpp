@@ -9,6 +9,7 @@
 
 int Interface::openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT)
 {
+    char e;
     std::ifstream eventsFile(eventF);
     if (!eventsFile)
     {
@@ -16,6 +17,9 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
     }
     else
     {
+        eventsFile.seekg(0, std::ios::end);
+        if (eventsFile.tellg() == 0)
+            std::cerr << "No events loaded.\n";
         Event event("", {}, {}, "", {});
         while (Event::loadFromFile(eventsFile, event))
         {
@@ -33,6 +37,9 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
     }
     else
     {
+        taskFile.seekg(0, std::ios::end);
+        if (taskFile.tellg() == 0)
+            std::cerr << "No pending tasks loaded.\n";
         Task task("", {}, false, "", Task::PENDING);
         while (Task::loadFromFile(taskFile, task))
         {
@@ -50,6 +57,9 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
     }
     else
     {
+        completedFile.seekg(0, std::ios::end);
+        if (completedFile.tellg() == 0)
+            std::cerr << "No completed tasks loaded.\n";
         std::vector<Task> recentCompleted;
         Task ctask("", {}, false, "", Task::COMPLETED);
         while (Task::loadFromFile(completedFile, ctask))
