@@ -15,10 +15,10 @@ void Event::print() const
     std::cout << std::left << std::setw(20) << name << std::setw(20) << startBuffer
               << std::setw(20) << endBuffer
               << std::setw(20) << location
-              << "Attendees: ";
+              << "";
     for (const auto &attendee : attendees)
     {
-        std::cout << attendee << " ";
+        std::cout << attendee << ", ";
     }
     std::cout << std::endl;
 }
