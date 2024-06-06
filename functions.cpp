@@ -59,3 +59,20 @@ std::tm make_tm(int year, int month, int day, int hour, int minute)
     t.tm_sec = 0;
     return t;
 };
+
+bool isOlderThanAMonth(const std::tm& date)
+{
+    // Current time
+    std::time_t t_now = std::time(nullptr);
+    std::tm* now_tm = std::localtime(&t_now);
+
+    // Convert the input date to time_t
+    std::time_t t_date = std::mktime(const_cast<std::tm*>(&date));
+
+    double seconds_diff = std::difftime(t_now, t_date);
+
+    // Calculate the number of seconds in a month (assuming 30 days in a month)
+    const double seconds_in_a_month = 30 * 24 * 60 * 60;
+
+    return seconds_diff > seconds_in_a_month;
+}
