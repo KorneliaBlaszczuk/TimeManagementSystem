@@ -21,6 +21,7 @@ public:
 
     void displayTasksCompleted(const Calendar &calendar);
 
+    // TODO displaying reminders
     void displayTodayReminders(const Calendar &calendar);
 
     void displayTommorowReminders(const Calendar &calendar);
