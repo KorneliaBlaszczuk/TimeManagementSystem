@@ -37,18 +37,17 @@ void Event::saveToFile(std::ofstream &outFile) const
     outFile << "\n";
 }
 
-bool Event::loadFromFile(std::ifstream &inFile, Event &event)
+bool Event::loadFromFile(std::ifstream& inFile, Event& event)
 {
     std::string line;
-    if (!std::getline(inFile, line) || !startsWith(line, "Event Name:"))
-    {
+    if (!std::getline(inFile, line) || !startsWith(line, "Event Name:")) {
         return false;
     }
 
     std::string name, startDateStr, endDateStr, location, attendeesStr;
     std::vector<std::string> attendees;
 
-    name = line.substr(11);
+    name = line.substr(12);
     std::getline(inFile, line);
     startDateStr = line.substr(12);
     std::getline(inFile, line);
@@ -67,23 +66,19 @@ bool Event::loadFromFile(std::ifstream &inFile, Event &event)
 
     std::getline(inFile, line);
     attendeesStr = line.substr(11);
-    if (attendeesStr.empty())
-    {
-        event = Event(name, startDate, endDate, location, attendees);
-        return true;
-    }
-    std::cout << attendeesStr;
+
+    // Ensure no trailing comma adds an empty string
     std::stringstream attendeesStream(attendeesStr);
     std::string attendee;
-    while (attendeesStream.good())
-    {
-        std::string substr;
-        getline(attendeesStream, substr, ',');
-        attendees.push_back(substr);
+    while (std::getline(attendeesStream, attendee, ',')) {
+        if (!attendee.empty()) {
+            attendees.push_back(attendee);
+        }
     }
 
     event = Event(name, startDate, endDate, location, attendees);
     return true;
+
 }
 
 std::tm Event::getStart() const
