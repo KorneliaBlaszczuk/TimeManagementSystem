@@ -1,9 +1,69 @@
 #include "interface.h"
+#include "functions.h"
 #include <iomanip>
 #include <iostream>
 #include <ctime>
 #include <vector>
 #include <string>
+#include <fstream>
+
+int Interface::openFile(Calendar& calendar)
+{
+    std::ifstream eventsFile("events.txt");
+    if (!eventsFile) {
+        std::cerr << "No events loaded.\n";
+    }
+    else {
+        Event event("", {}, {}, "", {});
+        while (Event::loadFromFile(eventsFile, event)) {
+            calendar.events.push_back(event);
+            std::cout << std::endl; // Add a newline between events
+        }
+        eventsFile.close();
+    }
+
+    // Load Tasks Pending
+    std::ifstream taskFile("tasks.txt");
+    if (!taskFile) {
+        std::cerr << "No pending tasks loaded.\n";
+    }
+    else
+    {
+        Task task("", {}, false, "", Task::PENDING);
+        while (Task::loadFromFile(taskFile, task)) {
+            calendar.addTask(task);
+        }
+
+        taskFile.close();
+    }
+
+
+    // Load Tasks Completed
+    std::ifstream completedFile("tasks_completed.txt");
+    if (!completedFile) {
+        std::cerr << "No completed tasks loaded.\n";
+
+    }
+    else
+    {
+        std::vector<Task> recentCompleted;
+        Task ctask("", {}, false, "", Task::COMPLETED);
+        while (Task::loadFromFile(completedFile, ctask)) {
+        if (!isOlderThanAMonth(ctask.getDate()))
+        {
+            recentCompleted.push_back(ctask);
+            calendar.addTask(ctask);
+        }
+    }
+
+    completedFile.close();
+
+    Task::removeCompleted(recentCompleted);
+    }
+
+
+    return 0;
+}
 
 void Interface::displayCalendar(const Calendar &calendar)
 {
@@ -47,6 +107,24 @@ void Interface::displayTasksInRange(const Calendar &calendar, const std::tm &sta
     for (const auto &task : tasks)
     {
         task.print();
+    }
+}
+
+void Interface::displayTasksCompleted(const Calendar& calendar)
+{
+    std::cout << std::left << std::setw(20) << "Date"
+              << std::setw(20) << "Name"
+              << std::setw(20) << "Importance"
+              << std::setw(20) << "Status"
+              << "Progress Note" << std::endl;
+    std::cout << std::string(80, '-') << std::endl;
+
+    for (const auto& task : calendar.tasks)
+    {
+        if (task.getProgressStatus() == Task::COMPLETED)
+        {
+            task.print();
+        }
     }
 }
 
@@ -145,7 +223,6 @@ void Interface::editEvent(Calendar &calendar)
 {
     std::string name;
     std::cout << "Enter the name of the event to edit: ";
-    std::cin.ignore();
     std::getline(std::cin, name);
 
     for (auto &event : calendar.events)
@@ -243,6 +320,19 @@ void Interface::editEvent(Calendar &calendar)
                 event.setAttendees(attendees);
             }
 
+            std::ofstream eventFile("events.txt"); // Open the file for writing
+
+            if (!eventFile) {
+                std::cerr << "Couldn't edit events.txt.\n";
+            }
+
+            for (const auto& event: calendar.events)
+            {
+                event.saveToFile(eventFile);
+            }
+
+            eventFile.close();
+
             std::cout << "Event updated successfully.\n";
             return;
         }
@@ -255,7 +345,6 @@ void Interface::editTask(Calendar &calendar)
 {
     std::string name;
     std::cout << "Enter the name of the task to edit: ";
-    std::cin.ignore();
     std::getline(std::cin, name);
 
     for (auto &task : calendar.tasks)
@@ -317,6 +406,41 @@ void Interface::editTask(Calendar &calendar)
                 task.setStatus(status);
             }
 
+            std::ofstream taskFile("tasks.txt"); // Open the file for writing
+
+            if (!taskFile) {
+                std::cerr << "Couldn't edit tasks.txt.\n";
+            }
+
+            // Save each event to the file
+            for (const auto& task : calendar.tasks) {
+                    if (task.getProgressStatus() == Task::PENDING) {
+                        task.saveToFile(taskFile);
+                }
+            }
+
+            // Close the file
+            taskFile.close();
+
+            std::ofstream completedTaskFile("tasks_completed.txt");
+            if (!completedTaskFile) {
+                std::cerr << "Couldn't edit tasks_completed.txt.\n";
+                return;
+            }
+
+            std::vector<Task> completed;
+            for (const auto& task : calendar.tasks) {
+                if (task.getProgressStatus() == Task::COMPLETED && !isOlderThanAMonth(task.getDate())) {
+                    task.saveToFile(completedTaskFile);
+                }
+                else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
+                {
+                    completed.push_back(task);
+                }
+            }
+
+            Task::removeCompleted(completed);
+
             std::cout << "Task updated successfully.\n";
             return;
         }
@@ -333,7 +457,6 @@ void Interface::addEvent(Calendar &calendar)
     std::string attendee;
 
     std::cout << "Enter event name: ";
-    std::cin.ignore();
     std::getline(std::cin, name);
     std::cout << "Enter event start year: ";
     std::cin >> year;
@@ -401,6 +524,22 @@ void Interface::addEvent(Calendar &calendar)
     Event event(name, start, end, location, attendees);
     calendar.addEvent(event);
     std::cout << "Event added successfully.\n";
+
+    std::ofstream outFile("events.txt"); // Open the file for writing
+
+    if (!outFile) {
+        std::cerr << "Error opening file for writing\n";
+    }
+
+    // Save each event to the file
+    for (const auto& event : calendar.events ) {
+        event.saveToFile(outFile);
+    }
+
+    // Close the file
+    outFile.close();
+
+    std::cout << "Events saved to file\n";
 }
 
 void Interface::addTask(Calendar &calendar)
@@ -411,7 +550,6 @@ void Interface::addTask(Calendar &calendar)
     int status;
 
     std::cout << "Enter task name: ";
-    std::cin.ignore();
     std::getline(std::cin, name);
     std::cout << "Enter task date year: ";
     std::cin >> year;
@@ -464,4 +602,41 @@ void Interface::addTask(Calendar &calendar)
 
     calendar.addTask(task);
     std::cout << "Task added successfully.\n";
+
+        std::ofstream taskFile("tasks.txt"); // Open the file for writing
+
+    if (!taskFile) {
+        std::cerr << "Error opening file for writing\n";
+    }
+
+    // Save each event to the file
+    for (const auto& task : calendar.tasks) {
+            if (task.getProgressStatus() == Task::PENDING) {
+                task.saveToFile(taskFile);
+        }
+    }
+
+    // Close the file
+    taskFile.close();
+
+    std::ofstream completedTaskFile("tasks_completed.txt");
+    if (!completedTaskFile) {
+        std::cerr << "Error opening file tasks_completed.txt for writing\n";
+        return;
+    }
+
+    std::vector<Task> completed;
+    for (const auto& task : calendar.tasks) {
+        if (task.getProgressStatus() == Task::COMPLETED) {
+            task.saveToFile(completedTaskFile);
+        }
+        else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
+        {
+            completed.push_back(task);
+        }
+    }
+
+    Task::removeCompleted(completed);
+
+    std::cout << "Task saved to file\n";
 }
