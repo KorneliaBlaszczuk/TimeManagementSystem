@@ -15,3 +15,5 @@ void getCurrentWeekRange(std::tm &weekStart, std::tm &weekEnd);
 
 // Function to get start and end date of the current month
 void getCurrentMonthRange(std::tm &monthStart, std::tm &monthEnd);
+
+bool isOlderThanAMonth(const std::tm& date);
