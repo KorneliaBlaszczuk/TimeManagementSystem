@@ -18,7 +18,7 @@ TEST(EventTest, EventPrintsCorrectly)
 
     std::ostringstream output;
     event.print();
-    std::string expectedOutput = "Meeting             2024-06-05 10:00    2024-06-05 12:00    Conference Room     Attendees: Alice Bob \n";
+    std::string expectedOutput = "Meeting             2024-06-05 10:00    2024-06-05 12:00    Conference Room     Alice, Bob, \n";
     testing::internal::CaptureStdout();
     event.print();
     std::string outputStr = testing::internal::GetCapturedStdout();
@@ -235,7 +235,7 @@ TEST(CalendarTest, AddingAndFilteringEvents)
     {
         event.print();
     }
-    std::string expectedOutput = "Meeting             2024-06-05 10:00    2024-06-05 12:00    Conference Room     Attendees: Alice Bob \n";
+    std::string expectedOutput = "Meeting             2024-06-05 10:00    2024-06-05 12:00    Conference Room     Alice, Bob, \n";
     testing::internal::CaptureStdout();
     std::string outputStr = "";
     for (const auto &event : calendar.filterEvents(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
@@ -374,7 +374,7 @@ TEST(InterfaceTest, OpenFileLoadsEventsAndTasks) {
     Calendar calendar;
 
     // events.txt file tests
-    std::ofstream eventsFile("events.txt");
+    std::ofstream eventsFile("testEvents_.txt");
     eventsFile << "Event Name: Meeting\n";
     eventsFile << "Start Date: 2024-06-01 09:00\n";
     eventsFile << "End Date: 2024-06-01 10:00\n";
@@ -383,7 +383,7 @@ TEST(InterfaceTest, OpenFileLoadsEventsAndTasks) {
     eventsFile.close();
 
     // tasks.txt file tests
-    std::ofstream tasksFile("tasks.txt");
+    std::ofstream tasksFile("testTasks_.txt");
     tasksFile << "Task Name: Finish Report\n";
     tasksFile << "Date: 2024-06-01\n";
     tasksFile << "Important: Yes\n";
@@ -393,7 +393,7 @@ TEST(InterfaceTest, OpenFileLoadsEventsAndTasks) {
     tasksFile.close();
 
     // tasks_completed.txt file tests
-    std::ofstream tasksCompletedFile("tasks_completed.txt");
+    std::ofstream tasksCompletedFile("testCompleted_.txt");
     tasksCompletedFile << "Task Name: Submit Report\n";
     tasksCompletedFile << "Date: 2024-05-01\n";
     tasksCompletedFile << "Important: Yes\n";
@@ -403,7 +403,7 @@ TEST(InterfaceTest, OpenFileLoadsEventsAndTasks) {
     tasksCompletedFile.close();
 
     Interface interface;
-    interface.openFile(calendar);
+    interface.openFile(calendar, "testEvents_.txt", "testTasks_.txt", "testCompleted_.txt");
 
     ASSERT_EQ(calendar.events.size(), 1);
     EXPECT_EQ(calendar.events[0].getName(), "Meeting");
@@ -455,8 +455,8 @@ TEST(InterfaceTest, DisplayCalendar) {
 
     std::string expectedOutput = "Start Date          End Date            Location            Attendees\n";
     expectedOutput += "--------------------------------------------------------------------------------\n";
-    expectedOutput += "Event1              2023-06-06 10:00    2023-06-06 12:00    Location1           Attendees: Attendee1 Attendee2 \n";
-    expectedOutput += "Event2              2023-07-07 14:00    2023-07-07 16:00    Location2           Attendees: Attendee3 Attendee4 \n";
+    expectedOutput += "Event1              2023-06-06 10:00    2023-06-06 12:00    Location1           Attendee1, Attendee2, \n";
+    expectedOutput += "Event2              2023-07-07 14:00    2023-07-07 16:00    Location2           Attendee3, Attendee4, \n";
 
     EXPECT_EQ(output, expectedOutput);
 }
@@ -481,8 +481,8 @@ TEST(InterfaceTest, DisplayEventsInRange) {
 
     std::string expectedOutput = "Name                Start Date          End Date            Location            Attendees\n";
     expectedOutput += "----------------------------------------------------------------------------------------------------\n";
-    expectedOutput += "Event1              2024-06-01 00:00    2024-06-30 00:00    Location1           Attendees: Attendee1 Attendee2 \n";
-    expectedOutput += "Event2              2024-06-01 00:00    2024-06-30 00:00    Location2           Attendees: Attendee3 Attendee4 \n";
+    expectedOutput += "Event1              2024-06-01 00:00    2024-06-30 00:00    Location1           Attendee1, Attendee2, \n";
+    expectedOutput += "Event2              2024-06-01 00:00    2024-06-30 00:00    Location2           Attendee3, Attendee4, \n";
 
 
 
@@ -580,7 +580,7 @@ TEST(InterfaceTest, EditTask) {
     std::stringstream input("Test Task\nNew Task\n2023\n6\n7\n1\nUpdated task description.\n1\n");
     std::streambuf* oldCin = std::cin.rdbuf(input.rdbuf());
 
-    interface.editTask(calendar);
+    interface.editTask(calendar, "testTask.txt", "testCompleted.txt");
 
     ASSERT_EQ(calendar.tasks.size(), 1);
     EXPECT_EQ(calendar.tasks[0].getName(), "New Task");
@@ -593,6 +593,7 @@ TEST(InterfaceTest, EditTask) {
 
     // Restore original std::cin
     std::cin.rdbuf(oldCin);
+
 }
 
 TEST(InterfaceTest, EditEvent) {
@@ -605,7 +606,7 @@ TEST(InterfaceTest, EditEvent) {
     // Redirect std::cin
     std::stringstream input("Test Event\nNew Event\n2023\n6\n7\n13\n30\n2023\n6\n7\n14\n0\nNew Location\nAttendee3\ndone\n");    std::streambuf* oldCin = std::cin.rdbuf(input.rdbuf());
 
-    interface.editEvent(calendar);
+    interface.editEvent(calendar, "testEvents.txt");
 
     ASSERT_EQ(calendar.events.size(), 1);
     EXPECT_EQ(calendar.events[0].getName(), "New Event");
@@ -631,7 +632,7 @@ TEST(InterfaceTest, AddTask) {
     std::stringstream input("Test Task\n2023\n6\n6\n1\nThis is a test task.\n0\ndone\n");
     std::streambuf* oldCin = std::cin.rdbuf(input.rdbuf());  // Redirect std::cin
 
-    interface.addTask(calendar);
+    interface.addTask(calendar, "testTask.txt", "testCompleted.txt");
 
     ASSERT_EQ(calendar.tasks.size(), 1);
     EXPECT_EQ(calendar.tasks[0].getName(), "Test Task");
@@ -653,7 +654,7 @@ TEST(InterfaceTest, AddEvent) {
     std::streambuf* oldCin = std::cin.rdbuf(input.rdbuf());  // Redirect std::cin
     // sets the buffer to input
 
-    interface.addEvent(calendar);
+    interface.addEvent(calendar, "testEvents.txt");
 
     ASSERT_EQ(calendar.events.size(), 1);
     EXPECT_EQ(calendar.events[0].getName(), "Test Event");
