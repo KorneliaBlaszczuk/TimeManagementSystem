@@ -17,6 +17,8 @@ public:
         : Plan(name, date), important(important), progressNote(progressNote), progressStatus(progressStatus) {}
 
     void print() const;
+    void saveToFile(std::ofstream& outFile) const;
+    static bool loadFromFile(std::ifstream& inFile, Task& task);
 
     bool getImportant() const;
     void setImportant(const bool &newImp);
@@ -26,6 +28,8 @@ public:
     void addToSubtask(const Task &newSub);
     Status getProgressStatus() const;
     void setStatus(const Status &newStatus);
+
+    static void removeCompleted(std::vector<Task>& recentCompleted);
 
 private:
     bool important;
