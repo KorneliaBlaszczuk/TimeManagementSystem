@@ -1,5 +1,5 @@
 #include "interface.h"
-#include "functions.h"
+#include <limits>
 #include <iomanip>
 #include <iostream>
 #include <ctime>
@@ -7,15 +7,18 @@
 #include <string>
 #include <fstream>
 
-int Interface::openFile(Calendar& calendar)
+int Interface::openFile(Calendar &calendar)
 {
     std::ifstream eventsFile("events.txt");
-    if (!eventsFile) {
+    if (!eventsFile)
+    {
         std::cerr << "No events loaded.\n";
     }
-    else {
+    else
+    {
         Event event("", {}, {}, "", {});
-        while (Event::loadFromFile(eventsFile, event)) {
+        while (Event::loadFromFile(eventsFile, event))
+        {
             calendar.events.push_back(event);
             std::cout << std::endl; // Add a newline between events
         }
@@ -24,43 +27,44 @@ int Interface::openFile(Calendar& calendar)
 
     // Load Tasks Pending
     std::ifstream taskFile("tasks.txt");
-    if (!taskFile) {
+    if (!taskFile)
+    {
         std::cerr << "No pending tasks loaded.\n";
     }
     else
     {
         Task task("", {}, false, "", Task::PENDING);
-        while (Task::loadFromFile(taskFile, task)) {
+        while (Task::loadFromFile(taskFile, task))
+        {
             calendar.addTask(task);
         }
 
         taskFile.close();
     }
 
-
     // Load Tasks Completed
     std::ifstream completedFile("tasks_completed.txt");
-    if (!completedFile) {
+    if (!completedFile)
+    {
         std::cerr << "No completed tasks loaded.\n";
-
     }
     else
     {
         std::vector<Task> recentCompleted;
         Task ctask("", {}, false, "", Task::COMPLETED);
-        while (Task::loadFromFile(completedFile, ctask)) {
-        if (!isOlderThanAMonth(ctask.getDate()))
+        while (Task::loadFromFile(completedFile, ctask))
         {
-            recentCompleted.push_back(ctask);
-            calendar.addTask(ctask);
+            if (!isOlderThanAMonth(ctask.getDate()))
+            {
+                recentCompleted.push_back(ctask);
+                calendar.addTask(ctask);
+            }
         }
+
+        completedFile.close();
+
+        Task::removeCompleted(recentCompleted);
     }
-
-    completedFile.close();
-
-    Task::removeCompleted(recentCompleted);
-    }
-
 
     return 0;
 }
@@ -110,7 +114,7 @@ void Interface::displayTasksInRange(const Calendar &calendar, const std::tm &sta
     }
 }
 
-void Interface::displayTasksCompleted(const Calendar& calendar)
+void Interface::displayTasksCompleted(const Calendar &calendar)
 {
     std::cout << std::left << std::setw(20) << "Date"
               << std::setw(20) << "Name"
@@ -119,7 +123,7 @@ void Interface::displayTasksCompleted(const Calendar& calendar)
               << "Progress Note" << std::endl;
     std::cout << std::string(80, '-') << std::endl;
 
-    for (const auto& task : calendar.tasks)
+    for (const auto &task : calendar.tasks)
     {
         if (task.getProgressStatus() == Task::COMPLETED)
         {
@@ -322,11 +326,12 @@ void Interface::editEvent(Calendar &calendar)
 
             std::ofstream eventFile("events.txt"); // Open the file for writing
 
-            if (!eventFile) {
+            if (!eventFile)
+            {
                 std::cerr << "Couldn't edit events.txt.\n";
             }
 
-            for (const auto& event: calendar.events)
+            for (const auto &event : calendar.events)
             {
                 event.saveToFile(eventFile);
             }
@@ -408,14 +413,17 @@ void Interface::editTask(Calendar &calendar)
 
             std::ofstream taskFile("tasks.txt"); // Open the file for writing
 
-            if (!taskFile) {
+            if (!taskFile)
+            {
                 std::cerr << "Couldn't edit tasks.txt.\n";
             }
 
             // Save each event to the file
-            for (const auto& task : calendar.tasks) {
-                    if (task.getProgressStatus() == Task::PENDING) {
-                        task.saveToFile(taskFile);
+            for (const auto &task : calendar.tasks)
+            {
+                if (task.getProgressStatus() == Task::PENDING)
+                {
+                    task.saveToFile(taskFile);
                 }
             }
 
@@ -423,14 +431,17 @@ void Interface::editTask(Calendar &calendar)
             taskFile.close();
 
             std::ofstream completedTaskFile("tasks_completed.txt");
-            if (!completedTaskFile) {
+            if (!completedTaskFile)
+            {
                 std::cerr << "Couldn't edit tasks_completed.txt.\n";
                 return;
             }
 
             std::vector<Task> completed;
-            for (const auto& task : calendar.tasks) {
-                if (task.getProgressStatus() == Task::COMPLETED && !isOlderThanAMonth(task.getDate())) {
+            for (const auto &task : calendar.tasks)
+            {
+                if (task.getProgressStatus() == Task::COMPLETED && !isOlderThanAMonth(task.getDate()))
+                {
                     task.saveToFile(completedTaskFile);
                 }
                 else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
@@ -527,12 +538,14 @@ void Interface::addEvent(Calendar &calendar)
 
     std::ofstream outFile("events.txt"); // Open the file for writing
 
-    if (!outFile) {
+    if (!outFile)
+    {
         std::cerr << "Error opening file for writing\n";
     }
 
     // Save each event to the file
-    for (const auto& event : calendar.events ) {
+    for (const auto &event : calendar.events)
+    {
         event.saveToFile(outFile);
     }
 
@@ -603,16 +616,19 @@ void Interface::addTask(Calendar &calendar)
     calendar.addTask(task);
     std::cout << "Task added successfully.\n";
 
-        std::ofstream taskFile("tasks.txt"); // Open the file for writing
+    std::ofstream taskFile("tasks.txt"); // Open the file for writing
 
-    if (!taskFile) {
+    if (!taskFile)
+    {
         std::cerr << "Error opening file for writing\n";
     }
 
     // Save each event to the file
-    for (const auto& task : calendar.tasks) {
-            if (task.getProgressStatus() == Task::PENDING) {
-                task.saveToFile(taskFile);
+    for (const auto &task : calendar.tasks)
+    {
+        if (task.getProgressStatus() == Task::PENDING)
+        {
+            task.saveToFile(taskFile);
         }
     }
 
@@ -620,14 +636,17 @@ void Interface::addTask(Calendar &calendar)
     taskFile.close();
 
     std::ofstream completedTaskFile("tasks_completed.txt");
-    if (!completedTaskFile) {
+    if (!completedTaskFile)
+    {
         std::cerr << "Error opening file tasks_completed.txt for writing\n";
         return;
     }
 
     std::vector<Task> completed;
-    for (const auto& task : calendar.tasks) {
-        if (task.getProgressStatus() == Task::COMPLETED) {
+    for (const auto &task : calendar.tasks)
+    {
+        if (task.getProgressStatus() == Task::COMPLETED)
+        {
             task.saveToFile(completedTaskFile);
         }
         else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
@@ -639,4 +658,59 @@ void Interface::addTask(Calendar &calendar)
     Task::removeCompleted(completed);
 
     std::cout << "Task saved to file\n";
+}
+
+void Interface::PomodoroRun()
+{
+    int choice;
+    std::cout << "You are entering Pomodoro mode.\n"
+              << "Possible modes to choose from are: \n"
+              << "1 - short: 3 repetitions, 30 minutes blocks, 5 minutes breaks;\n"
+              << "2 - medium: 4 repetitions, 30 minutes blocks, 7 minutes breaks;\n"
+              << "3 - long: 6 repetitions, 30 minutes blocks, 10 minutes breaks;\n"
+              << "4 - intense: 5 repetitions, 45 minutes blocks, 10 minutes breaks;\n"
+              << "5 - exam: 4 repetitions, 75 minutes blocks, 15 minutes breaks."
+              << "Which one do you choose?\n";
+    std::cin >> choice;
+    while (choice != 1 and choice != 2 and choice != 3 and choice != 4 and choice != 5)
+    {
+        std::cin.clear();                                                   // clear
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+        std::cout << "Invalid input. Please enter a number between 1 and 5.\n";
+        std::cin >> choice;
+    };
+    switch (choice)
+    {
+    case 1:
+    {
+        Pomodoro pm(3, 30, 5);
+        pm.go();
+        break;
+    }
+    case 2:
+    {
+        Pomodoro pm(4, 30, 7);
+        pm.go();
+        break;
+    }
+    case 3:
+    {
+        Pomodoro pm(6, 30, 10);
+        pm.go();
+        break;
+    }
+    case 4:
+    {
+        Pomodoro pm(5, 45, 10);
+        pm.go();
+        break;
+    }
+    case 5:
+    {
+        Pomodoro pm(4, 75, 15);
+        pm.go();
+        break;
+    }
+    };
+    return;
 }

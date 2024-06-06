@@ -5,13 +5,6 @@
 
 class Reminder : public Plan
 {
-    enum Repetition
-    {
-        NO,
-        EVERYDAY,
-        EVERY_WEEK,
-        EVERY_MONTH
-    };
 
     std::string description;
     int repetition;
@@ -22,6 +15,13 @@ class Reminder : public Plan
     void changeDate(std::tm &time_now);
 
 public:
+    enum Repetition
+    {
+        NO,
+        EVERYDAY,
+        EVERY_WEEK,
+        EVERY_MONTH
+    };
     Reminder(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat);
     // method to return information from reminder
     void print();
