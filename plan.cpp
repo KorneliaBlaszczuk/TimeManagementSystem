@@ -22,3 +22,7 @@ void Plan::setDate(const std::tm &newDate)
 {
     date = newDate;
 }
+
+bool Plan::startsWith(const std::string& line, const std::string& prefix) {
+    return line.compare(0, prefix.size(), prefix) == 0;
+}
