@@ -18,6 +18,8 @@ public:
         : Plan(name, start), start(start), end(end), location(location), attendees(attendees) {}
 
     void print() const;
+    void saveToFile(std::ofstream& outFile) const;
+    static bool loadFromFile(std::ifstream& inFile, Event& event);
 
     std::tm getStart() const;
     void setStart(const std::tm &newDate);
