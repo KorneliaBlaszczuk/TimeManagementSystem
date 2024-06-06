@@ -27,21 +27,25 @@ void Task::print() const
     }
 }
 
-void Task::saveToFile(std::ofstream& outFile) const {
+void Task::saveToFile(std::ofstream &outFile) const
+{
     outFile << "Task Name: " << name << "\n";
     outFile << "Date: " << std::put_time(&date, "%Y-%m-%d") << "\n";
     outFile << "Important: " << (important ? "Yes" : "No") << "\n";
     outFile << "Progress Note: " << progressNote << "\n";
     outFile << "Status: " << (progressStatus == COMPLETED ? "Completed" : "Pending") << "\n";
     outFile << "Subtasks: " << subtasks.size() << "\n";
-    for (const auto& subtask : subtasks) {
+    for (const auto &subtask : subtasks)
+    {
         subtask.saveToFile(outFile);
     }
 }
 
-bool Task::loadFromFile(std::ifstream& inFile, Task& task) {
+bool Task::loadFromFile(std::ifstream &inFile, Task &task)
+{
     std::string line;
-    if (!std::getline(inFile, line) || !Plan::startsWith(line, "Task Name:")) {
+    if (!std::getline(inFile, line) || !Plan::startsWith(line, "Task Name:"))
+    {
         return false;
     }
 
@@ -67,11 +71,14 @@ bool Task::loadFromFile(std::ifstream& inFile, Task& task) {
     task = Task(name, date, important, progressNote, status);
 
     std::getline(inFile, line);
-    if (startsWith(line, "Subtasks:")) {
+    if (startsWith(line, "Subtasks:"))
+    {
         size_t subtaskCount = std::stoi(line.substr(10));
-        for (size_t i = 0; i < subtaskCount; ++i) {
+        for (size_t i = 0; i < subtaskCount; ++i)
+        {
             Task subtask("", {}, false, "", PENDING);
-            if (loadFromFile(inFile, subtask)) {
+            if (loadFromFile(inFile, subtask))
+            {
                 task.addToSubtask(subtask);
             }
         }
@@ -79,7 +86,6 @@ bool Task::loadFromFile(std::ifstream& inFile, Task& task) {
 
     return true;
 }
-
 
 bool Task::getImportant() const
 {
@@ -121,13 +127,25 @@ void Task::setStatus(const Status &newStatus)
     progressStatus = newStatus;
 }
 
-void Task::removeCompleted(std::vector<Task>& recentCompleted)
+void Task::removeCompleted(std::vector<Task> &recentCompleted)
 {
     std::ofstream completedChecked("tasks_completed.txt");
-    for (const auto& task : recentCompleted)
+    for (const auto &task : recentCompleted)
     {
         task.saveToFile(completedChecked);
     }
 
     completedChecked.close();
+}
+
+void SubTask::addToSubtask(const Task &newSub)
+{
+    std::cerr << "Adding subtask to subtask is not allowed.";
+}
+
+std::vector<Task> SubTask::getSubtasks() const
+{
+    std::vector<Task> vector;
+    std::cerr << "Subtask cannot have subtasks.";
+    return vector;
 }

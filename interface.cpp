@@ -132,6 +132,11 @@ void Interface::displayTasksCompleted(const Calendar &calendar)
     }
 }
 
+void Interface::displayTodayReminders(const Calendar &calendar)
+{
+    return;
+};
+
 void Interface::selectMonthAndDisplayEvents(Calendar &calendar)
 {
     int startYear, startMonth, endYear, endMonth;
@@ -734,7 +739,7 @@ void Interface::addTask(Calendar &calendar)
         std::cout << "Enter subtask status (0 for pending, 1 for completed): ";
         std::cin >> status;
         Task::Status subtaskStatus = (status == 1) ? Task::COMPLETED : Task::PENDING;
-        Task subtask(subtaskName, date, important, "", subtaskStatus);
+        SubTask subtask(subtaskName, date, important, "", subtaskStatus);
         task.addToSubtask(subtask);
         std::cout << "Enter next subtask (or 'done' to finish): ";
     }
