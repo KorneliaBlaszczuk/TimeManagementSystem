@@ -2,6 +2,7 @@
 #include <limits>
 #include <stdexcept>
 #include <ctime>
+#include <fstream>
 #include "calendar.h"
 #include "interface.h"
 #include "task.h"
@@ -13,7 +14,7 @@ int main()
     Calendar calendar;
     Interface interface;
 
-    interface.openFile(calendar);
+    interface.openFile(calendar, "events.txt", "tasks.txt", "tasks_completed.txt");
 
     std::cout << "Welcome back\n";
 
@@ -78,7 +79,7 @@ int main()
                 interface.selectMonthAndDisplayEvents(calendar);
                 break;
             case 5:
-                interface.addEvent(calendar);
+                interface.addEvent(calendar, "events.txt");
                 break;
             case 6:
                 std::cout << "\nTasks for today:\n";
@@ -99,13 +100,13 @@ int main()
                 interface.displayTasksCompleted(calendar);
                 break;
             case 10:
-                interface.addTask(calendar);
+                interface.addTask(calendar, "tasks.txt", "tasks_completed.txt");
                 break;
             case 11:
-                interface.editEvent(calendar);
+                interface.editEvent(calendar, "events.txt");
                 break;
             case 12:
-                interface.editTask(calendar);
+                interface.editTask(calendar, "tasks.txt", "tasks_completed.txt");
                 break;
             case 13:
                 interface.PomodoroRun();
