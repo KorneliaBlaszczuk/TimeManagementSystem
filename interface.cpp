@@ -460,6 +460,11 @@ void Interface::editTask(Calendar &calendar)
     std::cout << "Task not found.\n";
 }
 
+void Interface::editReminder(Calendar &calendar)
+{
+    return;
+}
+
 void Interface::addEvent(Calendar &calendar)
 {
     int year, month, day, startHour, startMinute, endHour, endMinute;
