@@ -2,6 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include <ctime>
+#include <fstream>
 
 Reminder::Reminder(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat) : Plan(name_ar, date), description(details), repetition(repeat)
 {
@@ -81,3 +82,11 @@ void Reminder::changeDate(std::tm &time_now)
         std::mktime(&date);
     }
 };
+
+void Reminder::saveToFile(std::ofstream &outFile) const
+{
+    outFile << "Reminder Name: " << name << "\n";
+    outFile << "Date: " << std::put_time(&date, "%Y-%m-%d") << "\n";
+    outFile << "Details: " << description << "\n";
+    outFile << "Repetiotion: " << repetition << "\n";
+}
