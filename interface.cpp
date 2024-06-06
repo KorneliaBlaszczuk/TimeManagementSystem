@@ -513,7 +513,7 @@ void Interface::editTask(Calendar &calendar, std::string taskFile, std::string c
     std::cout << "Task not found.\n";
 }
 
-void Interface::editReminder(Calendar &calendar, std::string reminderFile, std::string completedFile)
+void Interface::editReminder(Calendar &calendar, std::string reminderFile)
 {
     return;
 }
@@ -613,7 +613,7 @@ void Interface::addEvent(Calendar &calendar, std::string outFile)
     std::cout << "Events saved to file\n";
 }
 
-void Interface::addReminder(Calendar &calendar, std::string reminderFile, std::string completedFile)
+void Interface::addReminder(Calendar &calendar, std::string reminderFile)
 {
     int year, month, day;
     std::string name, details;
@@ -700,7 +700,7 @@ void Interface::addReminder(Calendar &calendar, std::string reminderFile, std::s
         std::cerr << "Error opening file for writing\n";
     }
 
-    // Save each event to the file
+    // Save each reminder to the file
     for (const auto &reminder : calendar.reminders)
     {
         reminder.saveToFile(file);
@@ -709,29 +709,7 @@ void Interface::addReminder(Calendar &calendar, std::string reminderFile, std::s
     // Close the file
     file.close();
 
-    std::ofstream completedTaskFile(completedFile);
-    if (!completedTaskFile)
-    {
-        std::cerr << "Error opening file tasks_completed.txt for writing\n";
-        return;
-    }
-
-    std::vector<Task> completed;
-    for (const auto &task : calendar.tasks)
-    {
-        if (task.getProgressStatus() == Task::COMPLETED)
-        {
-            task.saveToFile(completedTaskFile);
-        }
-        else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
-        {
-            completed.push_back(task);
-        }
-    }
-
-    Task::removeCompleted(completed);
-
-    std::cout << "Task saved to file\n";
+    std::cout << "Reminder saved to file\n";
 };
 
 void Interface::addTask(Calendar &calendar, std::string taskFile, std::string completedTaskFile)

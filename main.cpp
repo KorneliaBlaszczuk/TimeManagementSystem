@@ -1,144 +1,25 @@
 #include <iostream>
-#include <limits>
 #include <stdexcept>
 #include <ctime>
 #include <fstream>
-#include "calendar.h"
-#include "interface.h"
-#include "task.h"
-#include "event.h"
-#include "reminder.h"
+#include "modes.h"
+#include "user.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    Calendar calendar;
-    Interface interface;
-
-    interface.openFile(calendar, "events.txt", "tasks.txt", "tasks_completed.txt");
-    // @TODO tutaj będzie do openFile trzeba dopisać pewnie reminders
-
-    std::cout << "Welcome back\n";
-
-    int choice;
-    while (true)
+    // going to initialization mode if there was no user name given at starting
+    if (argc < 2)
     {
-        std::cout << "\nSelect an operation:\n";
-        std::cout << "1 - Display today's events\n";
-        std::cout << "2 - Display events of the current week\n";
-        std::cout << "3 - Display events of the current month\n";
-        std::cout << "4 - Select month for the display of events\n";
-        std::cout << "5 - Add an event\n";
-        std::cout << "6 - Display today's tasks\n";
-        std::cout << "7 - Display tasks of the current week\n";
-        std::cout << "8 - Display tasks of the current month\n";
-        std::cout << "9 - Display completed tasks from within the month\n";
-        std::cout << "10 - Add a task\n";
-        std::cout << "11 - Edit an event\n";
-        std::cout << "12 - Edit a task\n";
-        std::cout << "13 - Start Pomodoro Mode\n";
-        std::cout << "14 - Delete an event\n";
-        std::cout << "15 - Delete a task\n";
-        std::cout << "16 - Delete a reminder\n";
-        std::cout << "17 - Exit\n";
-        std::cout << "Choice: ";
-        std::cin >> choice;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-        if (std::cin.fail())
-        {
-            std::cin.clear();                                                   // clear error state
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-            std::cout << "Invalid input. Please enter a number between 1 and 13.\n";
-            continue;
-        }
-
-        std::tm today = getCurrentDate();
-        std::tm endOfDay = today;
-        endOfDay.tm_hour = 23;
-        endOfDay.tm_min = 59;
-        endOfDay.tm_sec = 59;
-
-        std::tm weekStart, weekEnd;
-        std::tm monthStart, monthEnd;
-
-        try
-        {
-            switch (choice)
-            {
-            case 1:
-                std::cout << "\nEvents for today:\n";
-                interface.displayEventsInRange(calendar, today, endOfDay);
-                break;
-            case 2:
-                getCurrentWeekRange(weekStart, weekEnd);
-                std::cout << "\nEvents for the current week:\n";
-                interface.displayEventsInRange(calendar, weekStart, weekEnd);
-                break;
-            case 3:
-                getCurrentMonthRange(monthStart, monthEnd);
-                std::cout << "\nEvents for the current month:\n";
-                interface.displayEventsInRange(calendar, monthStart, monthEnd);
-                break;
-            case 4:
-                interface.selectMonthAndDisplayEvents(calendar);
-                break;
-            case 5:
-                interface.addEvent(calendar, "events.txt");
-                break;
-            case 6:
-                std::cout << "\nTasks for today:\n";
-                interface.displayTasksInRange(calendar, today, endOfDay);
-                break;
-            case 7:
-                getCurrentWeekRange(weekStart, weekEnd);
-                std::cout << "\nTasks for the current week:\n";
-                interface.displayTasksInRange(calendar, weekStart, weekEnd);
-                break;
-            case 8:
-                getCurrentMonthRange(monthStart, monthEnd);
-                std::cout << "\nTasks for the current month:\n";
-                interface.displayTasksInRange(calendar, monthStart, monthEnd);
-                break;
-            case 9:
-                std::cout << "\nCompleted tasks within a month: \n";
-                interface.displayTasksCompleted(calendar);
-                break;
-            case 10:
-                interface.addTask(calendar, "tasks.txt", "tasks_completed.txt");
-                break;
-            case 11:
-                interface.editEvent(calendar, "events.txt");
-                break;
-            case 12:
-                interface.editTask(calendar, "tasks.txt", "tasks_completed.txt");
-                break;
-            case 13:
-                interface.PomodoroRun();
-            case 14:
-                interface.deleteEvent(calendar, "events.txt");
-                break;
-            case 15:
-                interface.deleteTask(calendar, "tasks.txt");
-                break;
-            case 16:
-                interface.deleteReminder(calendar, "reminders.txt");
-                break;
-            case 17:
-                std::cout << "Goodbye!\n";
-                return 0;
-            default:
-                std::cout << "Invalid choice. Please try again.\n";
-                break;
-            }
-        }
-        catch (const std::exception &e)
-        {
-            std::cout << "Error: " << e.what() << "\n";
-            // Clear cin state if an exception occurs
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        }
+        InitMode();
     }
-
+    // here needs to be checked if user exists in file with users
+    // getting user name from program arguments
+    std::string name = argv[1];
+    // if user is correct ... needs to be done
+    User user(name); // in final version it will be from file
+    UserMode(user);
+    // if name is incorrect then
+    std::cerr << "User of the given name is not existing in TimeSystem. Going into Init Mode.";
+    // and InitMode();
     return 0;
 }

@@ -32,9 +32,9 @@ public:
 
     void editTask(Calendar &calendar, std::string fileTasks, std::string fileCompleted);
 
-    void editReminder(Calendar &Calendar, std::string reminderFile, std::string completedFile);
+    void editReminder(Calendar &Calendar, std::string reminderFile);
 
-    void addReminder(Calendar &Calendar, std::string reminderFile, std::string completedFile);
+    void addReminder(Calendar &Calendar, std::string reminderFile);
 
     void addEvent(Calendar &calendar, std::string file);
 
