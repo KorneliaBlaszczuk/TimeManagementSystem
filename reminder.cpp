@@ -12,15 +12,17 @@ Reminder::Reminder(std::string const &name_ar, std::tm const &date, std::string 
     }
 };
 
-void Reminder::print()
+void Reminder::print() const
 {
     char dateBuffer[20];
     strftime(dateBuffer, 20, "%Y-%m-%d %H:%M", &date);
 
-    std::cout << std::left << std::setw(20) << name
-              << std::setw(20) << dateBuffer
-              << std::endl
-              << description << std::endl;
+    std::cout << std::left << std::setw(20) << dateBuffer
+              << std::setw(20) << name
+              << std::setw(40) << description
+              << std::setw(20) << getRepetitions()
+              << std::endl;
+    return;
 };
 
 void Reminder::setDescription(std::string const &new_description)

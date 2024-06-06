@@ -134,8 +134,54 @@ void Interface::displayTasksCompleted(const Calendar &calendar)
 
 void Interface::displayTodayReminders(const Calendar &calendar)
 {
-    return;
+    // getting time range to filter
+    std::tm today = getCurrentDate();
+    std::tm endOfDay = today;
+    endOfDay.tm_hour = 23;
+    endOfDay.tm_min = 59;
+    endOfDay.tm_sec = 59;
+    auto reminders = calendar.filterEvents(today, endOfDay);
+    std::cout << std::left << std::setw(20) << "Date"
+              << std::setw(20) << "Name"
+              << std::setw(40) << "Details"
+              << std::setw(20) << "Repetition"
+              << std::endl;
+    std::cout << std::string(100, '-') << std::endl;
+
+    for (const auto &reminder : reminders)
+    {
+        reminder.print();
+    }
 };
+
+void Interface::displayTomorrowReminders(const Calendar &calendar)
+{
+    // getting time range to filter
+    std::tm tomorrow = getCurrentDate();
+    tomorrow.tm_mday += 1;
+    tomorrow.tm_hour = 0;
+    tomorrow.tm_min = 0;
+    tomorrow.tm_sec = 0;
+    // normalizing date
+    std::mktime(&tomorrow);
+
+    std::tm endOfDay = tomorrow;
+    endOfDay.tm_hour = 23;
+    endOfDay.tm_min = 59;
+    endOfDay.tm_sec = 59;
+    auto reminders = calendar.filterReminders(tomorrow, endOfDay);
+    std::cout << std::left << std::setw(20) << "Date"
+              << std::setw(20) << "Name"
+              << std::setw(40) << "Details"
+              << std::setw(20) << "Repetition"
+              << std::endl;
+    std::cout << std::string(100, '-') << std::endl;
+
+    for (const auto &reminder : reminders)
+    {
+        reminder.print();
+    }
+}
 
 void Interface::selectMonthAndDisplayEvents(Calendar &calendar)
 {
@@ -851,13 +897,17 @@ void Interface::PomodoroRun()
 }
 
 // Function to delete a task
-void Interface::deleteTask(Calendar &calendar, std::string taskFile) {
+void Interface::deleteTask(Calendar &calendar, std::string taskFile)
+{
     std::string name = getNameFromUser();
     std::tm date = getDateFromUser();
 
-    if (calendar.removeTask(name, date)) {
+    if (calendar.removeTask(name, date))
+    {
         std::cout << "Task has been removed." << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "No task found with the given name and date." << std::endl;
     }
 
@@ -883,13 +933,17 @@ void Interface::deleteTask(Calendar &calendar, std::string taskFile) {
 }
 
 // Function to delete an event
-void Interface::deleteEvent(Calendar &calendar, std::string outFile) {
+void Interface::deleteEvent(Calendar &calendar, std::string outFile)
+{
     std::string name = getNameFromUser();
     std::tm date = getDateFromUser();
 
-    if (calendar.removeEvent(name, date)) {
+    if (calendar.removeEvent(name, date))
+    {
         std::cout << "Event has been removed." << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "No event found with the given name and date." << std::endl;
     }
 
@@ -911,16 +965,19 @@ void Interface::deleteEvent(Calendar &calendar, std::string outFile) {
 }
 
 // Function to delete a reminder
-void Interface::deleteReminder(Calendar &calendar, std::string reminderFile) {
+void Interface::deleteReminder(Calendar &calendar, std::string reminderFile)
+{
     std::string name = getNameFromUser();
     std::tm date = getDateFromUser();
 
-    if (calendar.removeReminder(name, date)) {
+    if (calendar.removeReminder(name, date))
+    {
         std::cout << "Reminder has been removed." << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "No reminder found with the given name and date." << std::endl;
     }
 
     // TODO to samo co powyżej jak będzie gotowe reminders
-
 }

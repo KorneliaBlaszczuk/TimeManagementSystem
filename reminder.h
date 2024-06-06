@@ -23,8 +23,8 @@ public:
         EVERY_MONTH
     };
     Reminder(std::string const &name_ar, std::tm const &date, std::string details, Repetition repeat);
-    // method to return information from reminder
-    void print();
+    // method to print object info in cout
+    void print() const;
     // method to change additional information for reminder
     void setDescription(std::string const &new_description);
     // method to change how often reminder is repeated
@@ -34,6 +34,6 @@ public:
     // method to get how reminder is repeated
     std::string getRepetitions() const;
 
-    // TODO
+    // @TODO
     void saveToFile(std::ofstream &outFile) const;
 };
