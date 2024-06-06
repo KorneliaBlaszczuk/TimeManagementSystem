@@ -1,6 +1,7 @@
 #include "functions.h"
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
 std::time_t tm_to_time_t(const std::tm &t)
 {
@@ -62,14 +63,14 @@ std::tm make_tm(int year, int month, int day, int hour, int minute)
     return t;
 };
 
-bool isOlderThanAMonth(const std::tm& date)
+bool isOlderThanAMonth(const std::tm &date)
 {
     // Current time
     std::time_t t_now = std::time(nullptr);
-    std::tm* now_tm = std::localtime(&t_now);
+    std::tm *now_tm = std::localtime(&t_now);
 
     // Convert the input date to time_t
-    std::time_t t_date = std::mktime(const_cast<std::tm*>(&date));
+    std::time_t t_date = std::mktime(const_cast<std::tm *>(&date));
 
     double seconds_diff = std::difftime(t_now, t_date);
 
@@ -80,7 +81,8 @@ bool isOlderThanAMonth(const std::tm& date)
 }
 
 // Helper function to get the date from the user
-std::tm getDateFromUser() {
+std::tm getDateFromUser()
+{
     std::tm date = {};
     std::string dateString;
 
@@ -94,14 +96,16 @@ std::tm getDateFromUser() {
 }
 
 // Helper function to get the name from the user
-std::string getNameFromUser() {
+std::string getNameFromUser()
+{
     std::string name;
     std::cout << "Enter the name: ";
     std::getline(std::cin, name);
     return name;
 }
 
-bool compareTm(const std::tm &tm1, const std::tm &tm2) {
+bool compareTm(const std::tm &tm1, const std::tm &tm2)
+{
     return tm1.tm_year == tm2.tm_year &&
            tm1.tm_mon == tm2.tm_mon &&
            tm1.tm_mday == tm2.tm_mday;
