@@ -24,7 +24,7 @@ public:
     // TODO displaying reminders
     void displayTodayReminders(const Calendar &calendar);
 
-    void displayTommorowReminders(const Calendar &calendar);
+    void displayTomorrowReminders(const Calendar &calendar);
 
     void selectMonthAndDisplayEvents(Calendar &calendar);
 
