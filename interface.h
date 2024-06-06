@@ -7,15 +7,20 @@
 #include "plan.h"
 #include "functions.h"
 
+
 // Interface class
 class Interface
 {
 public:
+    int openFile(Calendar& calendar);
+
     void displayCalendar(const Calendar &calendar);
 
     void displayEventsInRange(const Calendar &calendar, const std::tm &start, const std::tm &end);
 
     void displayTasksInRange(const Calendar &calendar, const std::tm &start, const std::tm &end);
+
+    void displayTasksCompleted(const Calendar& calendar);
 
     void selectMonthAndDisplayEvents(Calendar &calendar);
 
