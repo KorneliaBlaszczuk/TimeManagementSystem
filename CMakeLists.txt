@@ -21,7 +21,8 @@ set(PROJECT_SOURCES
    plan.h plan.cpp
    interface.h interface.cpp
    functions.h functions.cpp
-   user.h)
+   user.h
+   modes.h modes.cpp)
 
 add_executable(calendar main.cpp ${PROJECT_SOURCES})
 
