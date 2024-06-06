@@ -7,12 +7,11 @@
 #include "plan.h"
 #include "functions.h"
 
-
 // Interface class
 class Interface
 {
 public:
-    int openFile(Calendar& calendar);
+    int openFile(Calendar &calendar);
 
     void displayCalendar(const Calendar &calendar);
 
@@ -20,7 +19,7 @@ public:
 
     void displayTasksInRange(const Calendar &calendar, const std::tm &start, const std::tm &end);
 
-    void displayTasksCompleted(const Calendar& calendar);
+    void displayTasksCompleted(const Calendar &calendar);
 
     void selectMonthAndDisplayEvents(Calendar &calendar);
 
@@ -31,4 +30,7 @@ public:
     void addEvent(Calendar &calendar);
 
     void addTask(Calendar &calendar);
+
+    // function use to run predefined pomodoro mode in project
+    void PomodoroRun();
 };

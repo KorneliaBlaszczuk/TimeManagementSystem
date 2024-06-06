@@ -67,6 +67,3 @@ public:
     // returns r (repetitions),bl(duration of block), br(duration of break)
     std::string getInfo();
 };
-
-// function use to run predefined pomodoro mode in project
-void PomodoroRun();
