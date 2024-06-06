@@ -33,4 +33,7 @@ public:
     std::string getDetails() const;
     // method to get how reminder is repeated
     std::string getRepetitions() const;
+
+    // TODO
+    void saveToFile(std::ofstream &outFile) const;
 };

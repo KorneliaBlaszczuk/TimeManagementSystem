@@ -10,6 +10,11 @@ void Calendar::addTask(const Task &task)
     tasks.push_back(task);
 }
 
+void Calendar::addReminder(const Reminder &reminder)
+{
+    reminders.push_back(reminder);
+}
+
 std::vector<Event> Calendar::filterEvents(const std::tm &start, const std::tm &end) const
 {
     std::vector<Event> result;

@@ -555,6 +555,127 @@ void Interface::addEvent(Calendar &calendar)
     std::cout << "Events saved to file\n";
 }
 
+void Interface::addReminder(Calendar &calendar)
+{
+    int year, month, day;
+    std::string name, details;
+    int status;
+
+    std::cout << "Enter reminder's name: ";
+    std::getline(std::cin, name);
+    while (name == "")
+    {
+        std::cin.clear();                                                   // clear
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+        std::cout << "Name of reminder cannot be empty. Write valid name.\n";
+        std::cin >> day;
+    };
+    std::cout << "Enter reminder's date year: ";
+    std::cin >> year;
+    while (2000 < 1 or year > 2100)
+    {
+        std::cin.clear();                                                   // clear
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+        std::cout << "Invalid year. Please enter a number between 2000 and 2100.\n";
+        std::cin >> day;
+    };
+    std::cout << "Enter reminder's date month: ";
+    std::cin >> month;
+    while (month < 1 or month > 12)
+    {
+        std::cin.clear();                                                   // clear
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+        std::cout << "Invalid month. Please enter a number between 1 and 12.\n";
+        std::cin >> day;
+    };
+    std::cout << "Enter reminder's date day: ";
+    std::cin >> day;
+    while (day < 1 || day > 31)
+    {
+        std::cin.clear();                                                   // clear
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+        std::cout << "Invalid day. Please enter a number between 1 and 31.\n";
+        std::cin >> day;
+    };
+    std::tm date = make_tm(year, month, day);
+
+    std::cin.ignore();
+    std::cout << "Enter reminder's details: ";
+    std::getline(std::cin, details);
+
+    std::cout << "Enter reminder's repetition (0 for no, 1 for everyday, 2 for every week, 3 for every month): ";
+    std::cin >> status;
+    Reminder::Repetition reminderRep;
+    switch (status)
+    {
+    case 0:
+        reminderRep = Reminder::NO;
+        break;
+    case 1:
+        reminderRep = Reminder::EVERYDAY;
+        break;
+    case 2:
+        reminderRep = Reminder::EVERY_WEEK;
+        break;
+    case 3:
+        reminderRep = Reminder::EVERY_MONTH;
+        break;
+    default:
+        while (status < 0 or status > 3)
+        {
+            std::cin.clear();                                                   // clear
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
+            std::cout << "Invalid input. Please enter a number between 0 and 3.\n";
+            std::cin >> status;
+        };
+    }
+
+    Reminder reminder(name, date, details, reminderRep);
+
+    calendar.addReminder(reminder);
+    std::cout << "Reminder added successfully.\n";
+
+    std::ofstream reminderFile("reminders.txt"); // Open the file for writing
+
+    if (!reminderFile)
+    {
+        std::cerr << "Error opening file for writing\n";
+    }
+
+    // Save each event to the file
+    for (const auto &reminder : calendar.reminders)
+    {
+        reminder.saveToFile(reminderFile);
+    }
+
+    // Close the file
+    reminderFile.close();
+
+    std::ofstream completedTaskFile("tasks_completed.txt");
+    if (!completedTaskFile)
+    {
+        std::cerr << "Error opening file tasks_completed.txt for writing\n";
+        return;
+    }
+
+    std::vector<Task> completed;
+    for (const auto &task : calendar.tasks)
+    {
+        if (task.getProgressStatus() == Task::COMPLETED)
+        {
+            task.saveToFile(completedTaskFile);
+        }
+        else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
+        {
+            completed.push_back(task);
+        }
+    }
+
+    Task::removeCompleted(completed);
+
+    std::cout << "Task saved to file\n";
+};
+
 void Interface::addTask(Calendar &calendar)
 {
     int year, month, day;

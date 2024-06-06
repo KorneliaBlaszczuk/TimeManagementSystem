@@ -19,13 +19,9 @@ public:
 
     void addTask(const Task &task);
 
+    void addReminder(const Reminder &reminder);
+
     std::vector<Event> filterEvents(const std::tm &start, const std::tm &end) const;
 
     std::vector<Task> filterTasks(const std::tm &start, const std::tm &end) const;
 };
-
-// Function to get start and end date of the current week
-void getCurrentWeekRange(std::tm &weekStart, std::tm &weekEnd);
-
-// Function to get start and end date of the current month
-void getCurrentMonthRange(std::tm &monthStart, std::tm &monthEnd);
