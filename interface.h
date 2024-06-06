@@ -11,7 +11,7 @@
 class Interface
 {
 public:
-    int openFile(Calendar &calendar);
+    int openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT);
 
     void displayCalendar(const Calendar &calendar);
 
@@ -28,17 +28,17 @@ public:
 
     void selectMonthAndDisplayEvents(Calendar &calendar);
 
-    void editEvent(Calendar &calendar);
+    void editEvent(Calendar &calendar, std::string file);
 
-    void editTask(Calendar &calendar);
+    void editTask(Calendar &calendar, std::string fileTasks, std::string fileCompleted);
 
     void editReminder(Calendar &Calendar);
 
     void addReminder(Calendar &Calendar);
 
-    void addEvent(Calendar &calendar);
+    void addEvent(Calendar &calendar, std::string file);
 
-    void addTask(Calendar &calendar);
+    void addTask(Calendar &calendar, std::string fileTasks, std::string fileCompleted);
 
     // TODO - all delete functions
 
