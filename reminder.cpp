@@ -88,5 +88,5 @@ void Reminder::saveToFile(std::ofstream &outFile) const
     outFile << "Reminder Name: " << name << "\n";
     outFile << "Date: " << std::put_time(&date, "%Y-%m-%d") << "\n";
     outFile << "Details: " << description << "\n";
-    outFile << "Repetiotion: " << repetition << "\n";
+    outFile << "Repetition: " << repetition << "\n";
 }
