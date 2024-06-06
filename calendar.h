@@ -25,6 +25,8 @@ public:
 
     std::vector<Task> filterTasks(const std::tm &start, const std::tm &end) const;
 
+    std::vector<Reminder> filterReminders(const std::tm &start, const std::tm &end) const;
+
     bool removeEvent(const std::string &name, const std::tm &date);
 
     bool removeTask(const std::string &name, const std::tm &date);
