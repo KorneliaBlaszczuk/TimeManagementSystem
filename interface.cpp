@@ -7,9 +7,9 @@
 #include <string>
 #include <fstream>
 
-int Interface::openFile(Calendar &calendar)
+int Interface::openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT)
 {
-    std::ifstream eventsFile("events.txt");
+    std::ifstream eventsFile(eventF);
     if (!eventsFile)
     {
         std::cerr << "No events loaded.\n";
@@ -26,7 +26,7 @@ int Interface::openFile(Calendar &calendar)
     }
 
     // Load Tasks Pending
-    std::ifstream taskFile("tasks.txt");
+    std::ifstream taskFile(tasksF);
     if (!taskFile)
     {
         std::cerr << "No pending tasks loaded.\n";
@@ -43,7 +43,7 @@ int Interface::openFile(Calendar &calendar)
     }
 
     // Load Tasks Completed
-    std::ifstream completedFile("tasks_completed.txt");
+    std::ifstream completedFile(completedT);
     if (!completedFile)
     {
         std::cerr << "No completed tasks loaded.\n";
@@ -228,7 +228,7 @@ void Interface::selectMonthAndDisplayEvents(Calendar &calendar)
     displayEventsInRange(calendar, monthStart, monthEnd);
 }
 
-void Interface::editEvent(Calendar &calendar)
+void Interface::editEvent(Calendar &calendar, std::string file)
 {
     std::string name;
     std::cout << "Enter the name of the event to edit: ";
@@ -329,7 +329,7 @@ void Interface::editEvent(Calendar &calendar)
                 event.setAttendees(attendees);
             }
 
-            std::ofstream eventFile("events.txt"); // Open the file for writing
+            std::ofstream eventFile(file); // Open the file for writing
 
             if (!eventFile)
             {
@@ -351,7 +351,7 @@ void Interface::editEvent(Calendar &calendar)
     std::cout << "Event not found.\n";
 }
 
-void Interface::editTask(Calendar &calendar)
+void Interface::editTask(Calendar &calendar, std::string taskFile, std::string completedTaskFile)
 {
     std::string name;
     std::cout << "Enter the name of the task to edit: ";
@@ -416,9 +416,9 @@ void Interface::editTask(Calendar &calendar)
                 task.setStatus(status);
             }
 
-            std::ofstream taskFile("tasks.txt"); // Open the file for writing
+            std::ofstream fileTask(taskFile); // Open the file for writing
 
-            if (!taskFile)
+            if (!fileTask)
             {
                 std::cerr << "Couldn't edit tasks.txt.\n";
             }
@@ -428,15 +428,15 @@ void Interface::editTask(Calendar &calendar)
             {
                 if (task.getProgressStatus() == Task::PENDING)
                 {
-                    task.saveToFile(taskFile);
+                    task.saveToFile(fileTask);
                 }
             }
 
             // Close the file
-            taskFile.close();
+            fileTask.close();
 
-            std::ofstream completedTaskFile("tasks_completed.txt");
-            if (!completedTaskFile)
+            std::ofstream completedFile(completedTaskFile);
+            if (!completedFile)
             {
                 std::cerr << "Couldn't edit tasks_completed.txt.\n";
                 return;
@@ -447,13 +447,15 @@ void Interface::editTask(Calendar &calendar)
             {
                 if (task.getProgressStatus() == Task::COMPLETED && !isOlderThanAMonth(task.getDate()))
                 {
-                    task.saveToFile(completedTaskFile);
+                    task.saveToFile(completedFile);
                 }
                 else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
                 {
                     completed.push_back(task);
                 }
             }
+
+            completedFile.close();
 
             Task::removeCompleted(completed);
 
@@ -470,7 +472,7 @@ void Interface::editReminder(Calendar &calendar)
     return;
 }
 
-void Interface::addEvent(Calendar &calendar)
+void Interface::addEvent(Calendar &calendar, std::string outFile)
 {
     int year, month, day, startHour, startMinute, endHour, endMinute;
     std::string name, location;
@@ -546,9 +548,9 @@ void Interface::addEvent(Calendar &calendar)
     calendar.addEvent(event);
     std::cout << "Event added successfully.\n";
 
-    std::ofstream outFile("events.txt"); // Open the file for writing
+    std::ofstream eventsFile(outFile); // Open the file for writing
 
-    if (!outFile)
+    if (!eventsFile)
     {
         std::cerr << "Error opening file for writing\n";
     }
@@ -556,11 +558,11 @@ void Interface::addEvent(Calendar &calendar)
     // Save each event to the file
     for (const auto &event : calendar.events)
     {
-        event.saveToFile(outFile);
+        event.saveToFile(eventsFile);
     }
 
     // Close the file
-    outFile.close();
+    eventsFile.close();
 
     std::cout << "Events saved to file\n";
 }
@@ -686,7 +688,7 @@ void Interface::addReminder(Calendar &calendar)
     std::cout << "Task saved to file\n";
 };
 
-void Interface::addTask(Calendar &calendar)
+void Interface::addTask(Calendar &calendar, std::string taskFile, std::string completedTaskFile)
 {
     int year, month, day;
     std::string name, progressNote;
@@ -747,9 +749,9 @@ void Interface::addTask(Calendar &calendar)
     calendar.addTask(task);
     std::cout << "Task added successfully.\n";
 
-    std::ofstream taskFile("tasks.txt"); // Open the file for writing
+    std::ofstream file(taskFile); // Open the file for writing
 
-    if (!taskFile)
+    if (!file)
     {
         std::cerr << "Error opening file for writing\n";
     }
@@ -759,15 +761,15 @@ void Interface::addTask(Calendar &calendar)
     {
         if (task.getProgressStatus() == Task::PENDING)
         {
-            task.saveToFile(taskFile);
+            task.saveToFile(file);
         }
     }
 
     // Close the file
-    taskFile.close();
+    file.close();
 
-    std::ofstream completedTaskFile("tasks_completed.txt");
-    if (!completedTaskFile)
+    std::ofstream fileCompleted(completedTaskFile);
+    if (!fileCompleted)
     {
         std::cerr << "Error opening file tasks_completed.txt for writing\n";
         return;
@@ -778,13 +780,15 @@ void Interface::addTask(Calendar &calendar)
     {
         if (task.getProgressStatus() == Task::COMPLETED)
         {
-            task.saveToFile(completedTaskFile);
+            task.saveToFile(fileCompleted);
         }
         else if (task.getProgressStatus() == Task::COMPLETED && isOlderThanAMonth(task.getDate()))
         {
             completed.push_back(task);
         }
     }
+
+    fileCompleted.close();
 
     Task::removeCompleted(completed);
 
