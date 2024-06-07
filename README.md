@@ -14,60 +14,69 @@ Głównym celem systemu jest pomoc użytkownikom w organizacji swojego dnia, aby
 ## Funkcjonalności
 
 1. **Tworzenie wydarzeń**:
-   - Temat, czas, miejsce, powtarzalność, osoby, przypomnienie.
+   - Nazwa, czasy rozpoczecia i zakończenia, miejsce, osoby.
    - Operacje: dodawanie, usuwanie, modyfikacja, wyświetlanie.
 
-2. **Tworzenie listy zadań (To-Do List)**:
-   - Zadania na konkretne dni, określenie czasu, priorytetowość, podzadania.
+2. **Tworzenie zadań (To-Do)**:
+   - Nazwa, data zadania, stopień ukończenia, priorytetowość, notatka do zadania, podzadania.
    - Operacje: dodawanie, usuwanie, modyfikacja, wyświetlanie.
 
-1. **Praca między kilkoma użytkownikami**.
-2. **Progress bar do długich zadań**.
-3. **Pomodoro**:
-   - Zarządzanie sesjami pracy i przerwami.
-4. **Integracja plików**:
-   - Przechowywanie notatek z wydarzeń, miejsce na pisanie notatek.
-5. **Podział wydarzeń na grupy**:
-   - Np. wykład, zajęcia, i łatwy dostęp do wszystkich danych.
-6. **Statystyki pracy**:
-   - Generowanie wykresów i zapis do pliku.
-7. **Zarządzanie etapami projektu (Agile Scrum)**.
-8. **Set revise and remind**:
-   - Generowanie syntezy notatek, tworzenie fiszek do powtórzeń.
+3. **Tworzenie przypomnień**:
+   - Nazwa, data, opis, powtarzalność.
+   - Operacje: dodawanie, usuwanie, modyfikacja, wyświetlanie.
+
+4. **Praca między kilkoma użytkownikami**.
+   - Aplikacja posiada użytkowników, tworzonych porzez nazwę.
+
+5. **Pomodoro**:
+   - Zarządzanie sesjami pracy i przerwami zgodnie z założeniami Pomodoro.
+
 
 ## Klasy i Struktury
 
 ### Główne Klasy
 
 - **Plan**:
-  - Atrybuty: nazwa planu, data podstawowa, typ planu (zadanie, wydarzenie, przypomnienie), odniesienie do szczegółowego obiektu planu.
+  - Atrybuty: nazwa planu, data podstawowa.
+  - Jest to klasa bazowa dla Event, Task oraz Reminder.
 
-- **Zadanie**:
-  - Atrybuty: status wykonania, ważność, notatka progresu, status progresu, lista podzadań.
-  - Struktura podzadania: nazwa, ważność, status wykonania.
+- **Task**:
+  - Atrybuty: name, date, important, progressNote, progressStatus, subtasks.
+  - Struktura podzadania: name, important, subtaskStatus.
+  - Podzadania zostały zmodyfikowane tak, aby nie przyjmować kolejnych podzadań.
 
-- **Wydarzenie**:
-  - Atrybuty: data zakończenia, lokalizacja/link do spotkania, osoby uczestniczące.
+- **Event**:
+  - Atrybuty: name, start, end, location, attendees.
+  - Z racji, ze ok 90% wydarzeń jest 1-dniowych dodawanie nie daję opcji wydarzeń kilkudniowych, jednak modyfikacja
+   wydarzenia pozwala na całkowitą zmianę daty dnia zakończenia. Założenie to ma oszczędzić czas użytkownikowi.
 
 - **Przypomnienie**:
-  - Atrybuty: szczegółowy opis czynności, częstotliwość powtarzania.
+  - Atrybuty: name, date, details, repeat.
 
 - **Pomodoro**:
-  - Atrybuty: czas przerwy, czas bloku pracy, liczba powtórzeń.
-  - Metody: zarządzanie sesjami pomodoro.
+  - Atrybuty: min - czas sesji.
+  - Metody: timer odlicza w dół czas.
+  - Terminal wyświetla tylko czas w trakcie działania Pomodoro, aby użytkownik maksymalnie skupił się na tym co robi bez żadnych rozpraszaczy.
 
 - **Użytkownik**:
-  - Atrybuty: nazwa użytkownika.
+  - Atrybuty: name.
+  - Nie pozwalamy na powtarzanie się nazw.
+  - Użytkownicy nie posiadają haseł, ponieważ czasowe ograniczenia projekty nie pozwoliły nam na zapewnienie  bezpieczeństwa danych logowania użytkowników poprzez m.in. szyfrowanie.
 
 ## Sposób Działania Programu
 
 ### Uruchomienie Programu
 
-Po uruchomieniu programu, użytkownik wprowadza swoją nazwę, co inicjuje spersonalizowane powitanie oraz wyświetlenie bieżących informacji, bazujących na aktualnej dacie systemowej.
+Po uruchomieniu programu, użytkownik widzi menu startowe użytkownika. Może stworzyć swoje konto uzytkownika, może zobaczyć jakie konta uzytkowników już istnieją, może usunąć swoje konto, przejść do swojego konta lub opuścić program.
+Nastęnie zostaje uruchomiona część główna programu - już dla konkretnego użytkownika(z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
 
 ### Działanie Programu
 
-Użytkownik może przeglądać swoje plany, w tym kalendarz z wydarzeniami, listy zadań i ich statusy progresu. Może również uruchomić sesję nauki za pomocą metody Pomodoro. Program przypomina o nadchodzących zadaniach i wydarzeniach poprzez komunikaty i sygnały dźwiękowe.
+Użytkownik może przeglądać swoje plany, w tym:
+a) kalendarz z wydarzeniami - może wyświetlać dzisiejsze wydarzenia, wydarzenia na dany tydzień, miesiąć lub z dowolnego zakresu czasowego (w miesiącach) oraz dodawać, modyfikować i usuwać wydarzenia;
+b) listy zadań
+c) przypomnienia;
+d) użytkownik może również uruchomić sesję nauki za pomocą metody Pomodoro;
 
 ## Wyzwania, które napotkałyśmy w trakcie projektu oraz przyjęte założenia
 
