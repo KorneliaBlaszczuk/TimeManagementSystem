@@ -16,7 +16,7 @@ User getUser();
 void deleteUser();
 void displayUsers();
 
-bool inUserList(std::string& checkName);
+bool inUserList(std::string& checkName, std::string fileUsers);
 User createUser();
 std::vector<User> loadUsers();
 void saveUsers(std::vector<User> users);

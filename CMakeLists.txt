@@ -28,6 +28,12 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/usersData)
 
 add_executable(TimeSystem main.cpp ${PROJECT_SOURCES})
 
+# Add a custom command to create users.txt with the specified content
+add_custom_command(
+    TARGET TimeSystem POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E echo "User name: korni" > ${CMAKE_BINARY_DIR}/testUsers.txt
+)
+
 add_executable(testGoogle
    testInterface.cpp
    testPomodoro.cpp

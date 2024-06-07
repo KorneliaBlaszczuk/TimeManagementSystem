@@ -256,7 +256,7 @@ User getUser()
     }
 
     User user(userName);
-    if (inUserList(userName))
+    if (inUserList(userName, "build/usersData/users.txt"))
         return user;
     else
     {
@@ -277,7 +277,7 @@ User createUser()
     }
 
     // Check if the user already exists
-    if (inUserList(newUserName))
+    if (inUserList(newUserName, "build/usersData/users.txt"))
     {
         throw std::invalid_argument("User already exists");
     }
@@ -312,7 +312,7 @@ void deleteUser() {
         throw std::invalid_argument("User names are not empty.\n");
     }
 
-    if (!inUserList(name)) {
+    if (!inUserList(name, "build/usersData/users.txt")) {
         throw std::invalid_argument("This member doesn't exist.\n");
     }
 
@@ -333,7 +333,7 @@ void deleteUser() {
     std::cout << "User was deleted.\n";
 }
 
-bool inUserList(std::string& checkName)
+bool inUserList(std::string& checkName, std::string fileUsers)
 {
     if (checkName.empty())
     {
@@ -341,7 +341,7 @@ bool inUserList(std::string& checkName)
         return false;
     }
 
-    std::ifstream usersFile("build/usersData/users.txt");
+    std::ifstream usersFile(fileUsers);
     if (!usersFile)
     {
         std::cerr << "No users available.\n";
