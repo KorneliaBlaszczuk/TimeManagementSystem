@@ -261,6 +261,29 @@ TEST(InterfaceTest, EditEvent)
     std::cin.rdbuf(oldCin);
 }
 
+TEST(InterfaceTest, EditRemider)
+{
+    Calendar calendar;
+    Interface interface;
+    Reminder rm("Test Reminder", make_tm(2024, 4, 4), "Old Details", Reminder::EVERYDAY);
+    calendar.addReminder(rm);
+    std::stringstream input("Test Reminder\nTest New Reminder\n2023\n6\n10\nDetails\n0\n");
+    std::streambuf *oldCin = std::cin.rdbuf(input.rdbuf()); // Redirect std::cin
+    // sets the buffer to input
+
+    interface.editReminder(calendar, "testRemiders.txt");
+
+    ASSERT_EQ(calendar.reminders.size(), 1);
+    EXPECT_EQ(calendar.reminders[0].getName(), "Test New Reminder");
+    EXPECT_EQ(calendar.reminders[0].getDate().tm_year, 123);
+    EXPECT_EQ(calendar.reminders[0].getDate().tm_mon, 5);
+    EXPECT_EQ(calendar.reminders[0].getDate().tm_mday, 10);
+    EXPECT_EQ(calendar.reminders[0].getDetails(), "Details");
+    EXPECT_EQ(calendar.reminders[0].getRepetitions(), "No repetition.");
+
+    std::cin.rdbuf(oldCin); // Restore original std::cin
+}
+
 TEST(InterfaceTest, AddTask)
 {
     Calendar calendar;
@@ -307,6 +330,28 @@ TEST(InterfaceTest, AddEvent)
     EXPECT_EQ(calendar.events[0].getAttendees().size(), 2);
     EXPECT_EQ(calendar.events[0].getAttendees()[0], "Attendee1");
     EXPECT_EQ(calendar.events[0].getAttendees()[1], "Attendee2");
+
+    std::cin.rdbuf(oldCin); // Restore original std::cin
+}
+
+TEST(InterfaceTest, AddRemider)
+{
+    Calendar calendar;
+    Interface interface;
+
+    std::stringstream input("Test Reminder\n2023\n6\n10\nDetails\n0\n");
+    std::streambuf *oldCin = std::cin.rdbuf(input.rdbuf()); // Redirect std::cin
+    // sets the buffer to input
+
+    interface.addReminder(calendar, "testRemiders.txt");
+
+    ASSERT_EQ(calendar.reminders.size(), 1);
+    EXPECT_EQ(calendar.reminders[0].getName(), "Test Reminder");
+    EXPECT_EQ(calendar.reminders[0].getDate().tm_year, 123);
+    EXPECT_EQ(calendar.reminders[0].getDate().tm_mon, 5);
+    EXPECT_EQ(calendar.reminders[0].getDate().tm_mday, 10);
+    EXPECT_EQ(calendar.reminders[0].getDetails(), "Details");
+    EXPECT_EQ(calendar.reminders[0].getRepetitions(), "No repetition.");
 
     std::cin.rdbuf(oldCin); // Restore original std::cin
 }

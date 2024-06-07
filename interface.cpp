@@ -78,7 +78,7 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
         while (Reminder::loadFromFile(reminderFile, reminder))
         {
             calendar.addReminder(reminder);
-            std::cout << reminder.getName() ;
+            std::cout << reminder.getName();
         }
 
         reminderFile.close();
@@ -578,6 +578,33 @@ void Interface::editReminder(Calendar &calendar, std::string reminderFile)
             std::getline(std::cin, details);
             if (!details.empty())
                 reminder.setDescription(details);
+
+            std::cout << "Enter new repetition(0 for no, 1 for everyday, 2 for every week, 3 for every month) or press Enter to keep current:";
+            std::getline(std::cin, input);
+            if (!input.empty())
+            {
+                int rep = std::stoi(input);
+                Reminder::Repetition reminderRep;
+                switch (rep)
+                {
+                case 0:
+                    reminderRep = Reminder::NO;
+                    break;
+                case 1:
+                    reminderRep = Reminder::EVERYDAY;
+                    break;
+                case 2:
+                    reminderRep = Reminder::EVERY_WEEK;
+                    break;
+                case 3:
+                    reminderRep = Reminder::EVERY_MONTH;
+                    break;
+                default:
+                    std::cerr << "Invalid repetition.\n";
+                    return;
+                }
+                reminder.setRepetition(reminderRep);
+            }
 
             std::ofstream file(reminderFile); // Open the file for writing
 
