@@ -1,4 +1,4 @@
-# Time Menagement System
+# Time Management System
 
 ## Opis Projektu
 
@@ -72,7 +72,7 @@ Po uruchomieniu programu, użytkownik widzi menu startowe użytkownika. Może st
 Nastęnie zostaje uruchomiona część główna
 programu - już dla konkretnego użytkownika (z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
 
-Jezeli uzytkownik ma juz wcześniej korzystał z programu moze on bezpośrednio przejsc do menu zwiazenego z zarządzaniem czasem. W tym celu uruchamiając program z linii polecenia nalezy podać nazwę uzytkownika.
+Jeżeli użytkownik juz wcześniej korzystał z programu może on bezpośrednio przejść do menu związenego z zarządzaniem czasem. W tym celu uruchamiając program z linii polecenia należy podać nazwę użytkownika.
 
 ### Działanie Programu
 
