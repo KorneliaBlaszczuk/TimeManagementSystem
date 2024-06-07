@@ -38,11 +38,14 @@ int InitMode()
             {
             case 1:
                 std::cout << "\nCreating new user\n";
-                try {
+                try
+                {
                     User newUser = createUser("build/usersData/users.txt");
                     std::cout << "User created successfully.\n";
                     return UserMode(newUser);
-                } catch(const std::exception& e) {
+                }
+                catch (const std::exception &e)
+                {
                     std::cerr << "Error creating user: " << e.what() << '\n';
                 }
                 break;
@@ -58,10 +61,13 @@ int InitMode()
                 break;
             case 4:
                 std::cout << "\nGoing into user mode\n";
-                try {
+                try
+                {
                     User user = getUser("build/usersData/users.txt");
                     return UserMode(user);
-                } catch(const std::exception& e) {
+                }
+                catch (const std::exception &e)
+                {
                     std::cerr << "Error: " << e.what() << '\n';
                     continue; // Go back to main menu
                 }
@@ -94,7 +100,7 @@ int UserMode(User &user)
     interface.openFile(calendar, user.getEventsFile(), user.getTaskFile(), user.getCompTaskFile(), user.getReminderFile());
     // @TODO tutaj będzie do openFile trzeba dopisać pewnie reminders
 
-    std::cout << "Welcome back "
+    std::cout << "Welcome "
               << UserName;
     int result = UserMenu(interface, calendar, user);
     return result;
@@ -297,22 +303,25 @@ User createUser(std::string fileUsers)
 void displayUsers(std::string fileUsers)
 {
     std::vector<User> users = loadUsers(fileUsers);
-    for (auto& user : users)
+    for (auto &user : users)
     {
         user.print();
     }
 }
 
-void deleteUser(std::string fileUsers) {
+void deleteUser(std::string fileUsers)
+{
     std::string name;
     std::cout << "\nEnter the user's name to delete: ";
     std::getline(std::cin, name);
 
-    if (name.empty()) {
+    if (name.empty())
+    {
         throw std::invalid_argument("User names are not empty.\n");
     }
 
-    if (!inUserList(name, fileUsers)) {
+    if (!inUserList(name, fileUsers))
+    {
         throw std::invalid_argument("This member doesn't exist.\n");
     }
 
@@ -320,9 +329,8 @@ void deleteUser(std::string fileUsers) {
     User userToRemove(name);
 
     // Użycie std::remove_if zamiast std::remove
-    auto newEnd = std::remove_if(allUsers.begin(), allUsers.end(), [&](const User& user) {
-        return user == userToRemove;
-    });
+    auto newEnd = std::remove_if(allUsers.begin(), allUsers.end(), [&](const User &user)
+                                 { return user == userToRemove; });
 
     // Usuń elementy od nowego końca do faktycznego końca wektora
     allUsers.erase(newEnd, allUsers.end());
@@ -333,7 +341,7 @@ void deleteUser(std::string fileUsers) {
     std::cout << "User was deleted.\n";
 }
 
-bool inUserList(std::string& checkName, std::string fileUsers)
+bool inUserList(std::string &checkName, std::string fileUsers)
 {
     if (checkName.empty())
     {
@@ -388,5 +396,4 @@ void saveUsers(std::vector<User> users, std::string fileUsers)
         saveToFile(file, user);
     }
     file.close();
-
 }

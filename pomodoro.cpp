@@ -170,7 +170,7 @@ void Pomodoro::go()
               << times << " repetitions\n"
               << block << " minutes session block\n"
               << breaks << " minutes breaks.\n"
-              << "Do you want to start? Press 1 - yes or 2 - no.";
+              << "Do you want to start? Press 1 - yes or 2 - no. Choice: ";
     std::cin >> choice;
 
     while (choice != 1 and choice != 2)

@@ -123,7 +123,7 @@ void Interface::displayTasksInRange(const Calendar &calendar, const std::tm &sta
               << std::setw(20) << "Importance"
               << std::setw(20) << "Status"
               << "Progress Note" << std::endl;
-    std::cout << std::string(80, '-') << std::endl;
+    std::cout << std::string(100, '-') << std::endl;
 
     for (const auto &task : tasks)
     {
@@ -138,7 +138,7 @@ void Interface::displayTasksCompleted(const Calendar &calendar)
               << std::setw(20) << "Importance"
               << std::setw(20) << "Status"
               << "Progress Note" << std::endl;
-    std::cout << std::string(80, '-') << std::endl;
+    std::cout << std::string(100, '-') << std::endl;
 
     for (const auto &task : calendar.tasks)
     {
@@ -934,8 +934,8 @@ void Interface::PomodoroRun()
               << "2 - medium: 4 repetitions, 30 minutes blocks, 7 minutes breaks;\n"
               << "3 - long: 6 repetitions, 30 minutes blocks, 10 minutes breaks;\n"
               << "4 - intense: 5 repetitions, 45 minutes blocks, 10 minutes breaks;\n"
-              << "5 - exam: 4 repetitions, 75 minutes blocks, 15 minutes breaks."
-              << "Which one do you choose?\n";
+              << "5 - exam: 4 repetitions, 75 minutes blocks, 15 minutes breaks.\n"
+              << "Which one do you choose? Choice: \n";
     std::cin >> choice;
     while (choice != 1 and choice != 2 and choice != 3 and choice != 4 and choice != 5)
     {
