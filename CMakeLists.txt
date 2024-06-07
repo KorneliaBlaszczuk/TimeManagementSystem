@@ -28,5 +28,12 @@ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/usersData)
 
 add_executable(TimeSystem main.cpp ${PROJECT_SOURCES})
 
-add_executable(testGoogle testPomodoro.cpp testReminder.cpp testUser.cpp ${PROJECT_SOURCES})
+add_executable(testGoogle
+   testInterface.cpp
+   testPomodoro.cpp
+   testReminder.cpp
+   testEvent.cpp
+   testTask.cpp
+   testCalendar.cpp
+   testUser.cpp ${PROJECT_SOURCES})
 target_link_libraries(testGoogle PUBLIC gtest_main)

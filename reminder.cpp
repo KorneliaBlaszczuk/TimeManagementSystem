@@ -66,22 +66,28 @@ std::string Reminder::getRepetitions() const
 
 void Reminder::changeDate(std::tm &time_now)
 {
-    while (tm_to_time_t(time_now) > tm_to_time_t(date))
+    if (repetition != NO)
     {
-        switch (repetition)
+        while (tm_to_time_t(time_now) > tm_to_time_t(date))
         {
-        case EVERYDAY:
-            date.tm_mday += 1;
-            break;
-        case EVERY_WEEK:
-            date.tm_mday += 7;
-            break;
-        case EVERY_MONTH:
-            date.tm_mon += 1;
-            break;
+            switch (repetition)
+            {
+            case EVERYDAY:
+                date.tm_mday += 1;
+                continue;
+                ;
+            case EVERY_WEEK:
+                date.tm_mday += 7;
+                continue;
+            case EVERY_MONTH:
+                date.tm_mon += 1;
+            default:
+                continue;
+            }
         }
         // normalizing date so it is correct
-        std::mktime(&date);
+        std::time_t temp = std::mktime(&date);
+        date = *std::localtime(&temp);
     }
 };
 

@@ -154,6 +154,9 @@ void Interface::displayTodayReminders(const Calendar &calendar)
 {
     // getting time range to filter
     std::tm today = getCurrentDate();
+    today.tm_hour = 0;
+    today.tm_min = 0;
+    today.tm_sec = 0;
     std::tm endOfDay = today;
     endOfDay.tm_hour = 23;
     endOfDay.tm_min = 59;

@@ -18,7 +18,9 @@ protected:
 public:
     // constructor of plan object
     Plan(std::string const &name, std::tm const &date)
-        : name(name), date(date) {}
+        : name(name), date(date) {
+        this->date.tm_isdst = -1;
+    };
 
     // Getting name of the plan object.
     std::string getName() const;

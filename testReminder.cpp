@@ -43,3 +43,94 @@ TEST(reminder_test, setDescription)
     rm.setDescription("new details");
     ASSERT_EQ(rm.getDetails(), "new details");
 }
+
+TEST(reminder_test, updatingReminders_no)
+{
+    std::tm time_new = make_tm(2024, 6, 7, 12, 0);
+    std::tm date = make_tm(2024, 6, 5, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::NO);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 124);
+    ASSERT_EQ(rm.getDate().tm_mon, 5);
+    ASSERT_EQ(rm.getDate().tm_mday, 5);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}
+
+TEST(reminder_test, updatingReminders_everyday)
+{
+    std::tm time_new = make_tm(2024, 6, 7, 12, 0);
+    std::tm date = make_tm(2024, 6, 5, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::EVERYDAY);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 124);
+    ASSERT_EQ(rm.getDate().tm_mon, 5);
+    ASSERT_EQ(rm.getDate().tm_mday, 8);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}
+
+TEST(reminder_test, updatingReminders_everyday_diff_month)
+{
+    std::tm time_new = make_tm(2024, 5, 31, 12, 0);
+    std::tm date = make_tm(2024, 5, 31, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::EVERYDAY);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 124);
+    ASSERT_EQ(rm.getDate().tm_mon, 5);
+    ASSERT_EQ(rm.getDate().tm_mday, 1);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}
+
+TEST(reminder_test, updatingReminders_everyweek)
+{
+    std::tm time_new = make_tm(2024, 6, 7, 12, 0);
+    std::tm date = make_tm(2024, 6, 5, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::EVERY_WEEK);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 124);
+    ASSERT_EQ(rm.getDate().tm_mon, 5);
+    ASSERT_EQ(rm.getDate().tm_mday, 12);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}
+
+TEST(reminder_test, updatingReminders_everyweek_diff_mon)
+{
+    std::tm time_new = make_tm(2024, 6, 5, 12, 0);
+    std::tm date = make_tm(2024, 5, 30, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::EVERY_WEEK);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 124);
+    ASSERT_EQ(rm.getDate().tm_mon, 5);
+    ASSERT_EQ(rm.getDate().tm_mday, 6);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}
+
+TEST(reminder_test, updateReminders_everyMon)
+{
+    std::tm time_new = make_tm(2024, 6, 7, 12, 0);
+    std::tm date = make_tm(2024, 6, 5, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::EVERY_MONTH);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 124);
+    ASSERT_EQ(rm.getDate().tm_mon, 6);
+    ASSERT_EQ(rm.getDate().tm_mday, 5);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}
+
+TEST(reminder_test, updateReminders_everyMon_diff_year)
+{
+    std::tm time_new = make_tm(2024, 12, 17, 12, 0);
+    std::tm date = make_tm(2024, 12, 5, 10, 0);
+    Reminder rm("abc", date, "old details", Reminder::EVERY_MONTH);
+    rm.changeDate(time_new);
+    ASSERT_EQ(rm.getDate().tm_year, 125);
+    ASSERT_EQ(rm.getDate().tm_mon, 0);
+    ASSERT_EQ(rm.getDate().tm_mday, 5);
+    ASSERT_EQ(rm.getDate().tm_hour, 10);
+    ASSERT_EQ(rm.getDate().tm_min, 0);
+}

@@ -10,10 +10,6 @@ class Reminder : public Plan
     int repetition;
 
     friend class Calendar;
-
-    // method that will be used to update next appearance of reminder by calendar
-    void changeDate(std::tm &time_now);
-
 public:
     enum Repetition
     {
@@ -34,7 +30,8 @@ public:
     // method to get how reminder is repeated
     std::string getRepetitions() const;
 
-    // @TODO
+    void changeDate(std::tm &time_now);
+
     void saveToFile(std::ofstream &outFile) const;
     static bool loadFromFile(std::ifstream& inFile, Reminder& reminder);
 };
