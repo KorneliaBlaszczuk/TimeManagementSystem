@@ -67,6 +67,7 @@ Głównym celem systemu jest pomoc użytkownikom w organizacji swojego dnia, aby
 
 ### Uruchomienie Programu
 
+Należy uruchomić program w folderze, w którym mamy pliki programowe: ./build/TimeSystem + ewentualna nazwa użytkownika, jeśli chcemy.
 Po uruchomieniu programu, użytkownik widzi menu startowe użytkownika. Może stworzyć swoje konto uzytkownika, może zobaczyć jakie konta uzytkowników już istnieją, może usunąć swoje konto, przejść do swojego konta lub opuścić program.
 Nastęnie zostaje uruchomiona część główna
 programu - już dla konkretnego użytkownika (z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
