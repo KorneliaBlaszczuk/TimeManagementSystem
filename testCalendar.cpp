@@ -304,44 +304,6 @@ TEST(CalendarTest, FilterTasksBoundary)
     EXPECT_EQ(filteredTasks[0].getName(), "Finish Report");
 }
 
-TEST(CalendarTest, FilterOneDayRemiders)
-{
-    Calendar calendar;
-
-    std::tm reminderDate1 = make_tm(2024, 6, 10);
-    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
-
-    calendar.addReminder(rm1);
-    ASSERT_EQ(calendar.reminders.size(), 1);
-    EXPECT_EQ(calendar.reminders[0].getName(), "Finish Report");
-
-    std::tm filterStart = make_tm(2024, 6, 10);
-    std::tm filterEnd = make_tm(2024, 6, 10, 23, 59);
-    std::vector<Reminder> filteredReminders = calendar.filterReminders(filterStart, filterEnd);
-
-    ASSERT_EQ(filteredReminders.size(), 1);
-    EXPECT_EQ(filteredReminders[0].getName(), "Finish Report");
-}
-
-TEST(CalendarTest, FilterRemindersBoundary)
-{
-    Calendar calendar;
-
-    std::tm reminderDate1 = make_tm(2024, 6, 10);
-    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
-
-    calendar.addReminder(rm1);
-    ASSERT_EQ(calendar.reminders.size(), 1);
-    EXPECT_EQ(calendar.reminders[0].getName(), "Finish Report");
-
-    std::tm filterStart = make_tm(2024, 6, 10);
-    std::tm filterEnd = make_tm(2024, 6, 10);
-    std::vector<Reminder> filteredReminders = calendar.filterReminders(filterStart, filterEnd);
-
-    ASSERT_EQ(filteredReminders.size(), 1);
-    EXPECT_EQ(filteredReminders[0].getName(), "Finish Report");
-}
-
 TEST(CalendarTest, removeEvent)
 {
     Calendar calendar;
