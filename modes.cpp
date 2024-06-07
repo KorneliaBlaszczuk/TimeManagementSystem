@@ -8,7 +8,7 @@
 // function that makes an interface to work in settings mode (first run, adding users etc.)
 int InitMode()
 {
-    std::cout << "Welcome to TimeSystem.";
+    std::cout << "Welcome to TimeSystem.\n";
     int choice;
     while (true)
     {
@@ -49,7 +49,7 @@ int InitMode()
                 // after getting out of user mode, we need to finish program
                 return 0;
             case 5:
-                std::cout << "Goodbay!";
+                std::cout << "Goodbye!";
                 return 0;
             default:
                 std::cout << "Invalid choice. Please try again.\n";
@@ -201,10 +201,13 @@ int UserMenu(Interface &interface, Calendar &calendar)
                 break;
             case 15:
                 interface.addReminder(calendar, "reminders.txt");
+                break;
             case 16:
                 interface.editReminder(calendar, "reminders.txt");
+                break;
             case 17:
                 interface.PomodoroRun();
+                break;
             case 18:
                 interface.deleteEvent(calendar, "events.txt");
                 break;
