@@ -21,3 +21,27 @@ TEST(testUser, setName_user)
     user.setName("bcd1");
     ASSERT_EQ(user.getName(), "bcd1");
 }
+
+TEST(testUser, getFiles)
+{
+    User user("abc");
+    ASSERT_EQ(user.getEventsFile(), "build/usersData/abc_events.txt");
+    ASSERT_EQ(user.getTaskFile(), "build/usersData/abc_tasks.txt");
+    ASSERT_EQ(user.getCompTaskFile(), "build/usersData/abc_task_comp.txt");
+    ASSERT_EQ(user.getReminderFile(), "build/usersData/abc_reminders.txt");
+}
+
+TEST(testUser, print)
+{
+    User user("abc");
+
+    std::ostringstream oss;
+    std::streambuf* oldCoutBuffer = std::cout.rdbuf(oss.rdbuf());
+
+    user.print();
+
+    std::cout.rdbuf(oldCoutBuffer);
+
+    EXPECT_EQ(oss.str(), "abc\n");
+
+}
