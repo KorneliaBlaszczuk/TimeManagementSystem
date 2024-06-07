@@ -68,14 +68,14 @@ Głównym celem systemu jest pomoc użytkownikom w organizacji swojego dnia, aby
 ### Uruchomienie Programu
 
 Po uruchomieniu programu, użytkownik widzi menu startowe użytkownika. Może stworzyć swoje konto uzytkownika, może zobaczyć jakie konta uzytkowników już istnieją, może usunąć swoje konto, przejść do swojego konta lub opuścić program.
-Nastęnie zostaje uruchomiona część główna 
+Nastęnie zostaje uruchomiona część główna
 programu - już dla konkretnego użytkownika (z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
 
 ### Działanie Programu
 
 Użytkownik może przeglądać swoje plany, w tym:
 - kalendarz z wydarzeniami - może wyświetlać dzisiejsze wydarzenia, wydarzenia na dany tydzień, miesiąć lub z dowolnego zakresu czasowego (w miesiącach) oraz dodawać, modyfikować i usuwać wydarzenia;
-- zadania - może wyświetlać dzisiejsze zadania (oraz zaległe), zadania na dany tydzień, miesiąc, wyświetlać ukończone zadania z całego miesiąca, dodawać, modyfikować i usuwać zadania; 
+- zadania - może wyświetlać dzisiejsze zadania (oraz zaległe), zadania na dany tydzień, miesiąc, wyświetlać ukończone zadania z całego miesiąca, dodawać, modyfikować i usuwać zadania;
 Docelowo nie wyświetlają się już ukończone zadania, ale można zobaczyć je jako podsumowanie swoich osiagnięć z danego miesiąca (często jest to dużą motywacją dla użytkownika do dalszej systematycznej pracy);
 - przypomnienia - wyswietlanie dzisiejszych i jutrzejszych przypomnień, dodawanie, modyfikowanie i usuwanie przypomnień;
 - użytkownik może również uruchomić sesję nauki za pomocą metody Pomodoro;
@@ -88,14 +88,14 @@ Docelowo nie wyświetlają się już ukończone zadania, ale można zobaczyć je
    na naszych środowiskach.
 2. **Przechowywanie notatek i plików**:
    - Aktualnie wszytskie pliki powiązane z programem przechowywane są w folderze build w postaci plików txt.
-   Początkowo rozważałyśmy też użycie plików json, jednak ostatecznie prostota obsługi plików txt przekonała nas do 
+   Początkowo rozważałyśmy też użycie plików json, jednak ostatecznie prostota obsługi plików txt przekonała nas do
    wybrania właśnie tego sposobu przechowywania danych użytkownika.
 3. **Funkcjonalność 'Pomodoro'**:
-   - Z powodu implementacji jaką stworzyłyśmy, nasz program działa tylko na systemach Unix, ponadto dźwięk i jego 
+   - Z powodu implementacji jaką stworzyłyśmy, nasz program działa tylko na systemach Unix, ponadto dźwięk i jego
    słyszalność zależą od systemu, jaki posiada użytkownik.
 
 ## Autorzy
 
 - Kornelia Błaszczuk - 3313coś
-- Martyna Orzechowska - 3314coś
+- Martyna Orzechowska - 331417
 - Aleksandra Raczyńska - 331428
