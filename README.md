@@ -68,15 +68,17 @@ Głównym celem systemu jest pomoc użytkownikom w organizacji swojego dnia, aby
 ### Uruchomienie Programu
 
 Po uruchomieniu programu, użytkownik widzi menu startowe użytkownika. Może stworzyć swoje konto uzytkownika, może zobaczyć jakie konta uzytkowników już istnieją, może usunąć swoje konto, przejść do swojego konta lub opuścić program.
-Nastęnie zostaje uruchomiona część główna programu - już dla konkretnego użytkownika(z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
+Nastęnie zostaje uruchomiona część główna 
+programu - już dla konkretnego użytkownika (z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
 
 ### Działanie Programu
 
 Użytkownik może przeglądać swoje plany, w tym:
-a) kalendarz z wydarzeniami - może wyświetlać dzisiejsze wydarzenia, wydarzenia na dany tydzień, miesiąć lub z dowolnego zakresu czasowego (w miesiącach) oraz dodawać, modyfikować i usuwać wydarzenia;
-b) listy zadań
-c) przypomnienia;
-d) użytkownik może również uruchomić sesję nauki za pomocą metody Pomodoro;
+- kalendarz z wydarzeniami - może wyświetlać dzisiejsze wydarzenia, wydarzenia na dany tydzień, miesiąć lub z dowolnego zakresu czasowego (w miesiącach) oraz dodawać, modyfikować i usuwać wydarzenia;
+- zadania - może wyświetlać dzisiejsze zadania (oraz zaległe), zadania na dany tydzień, miesiąc, wyświetlać ukończone zadania z całego miesiąca, dodawać, modyfikować i usuwać zadania; 
+Docelowo nie wyświetlają się już ukończone zadania, ale można zobaczyć je jako podsumowanie swoich osiagnięć z danego miesiąca (często jest to dużą motywacją dla użytkownika do dalszej systematycznej pracy);
+- przypomnienia - wyswietlanie dzisiejszych i jutrzejszych przypomnień, dodawanie, modyfikowanie i usuwanie przypomnień;
+- użytkownik może również uruchomić sesję nauki za pomocą metody Pomodoro;
 
 ## Wyzwania, które napotkałyśmy w trakcie projektu oraz przyjęte założenia
 
