@@ -667,40 +667,33 @@ void Interface::addReminder(Calendar &calendar, std::string reminderFile)
 
     std::cout << "Enter reminder's name: ";
     std::getline(std::cin, name);
-    while (name == "")
+
+    if (name == "")
     {
-        std::cin.clear();                                                   // clear
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-        std::cout << "Name of reminder cannot be empty. Write valid name.\n";
-        std::cin >> day;
-    };
+        std::cerr << "Invalid name of reminder. It needs to have at least one character.\n";
+        return;
+    }
     std::cout << "Enter reminder's date year: ";
     std::cin >> year;
-    while (2000 < 1 or year > 2100)
+    if (2000 < 1 or year > 2100)
     {
-        std::cin.clear();                                                   // clear
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-        std::cout << "Invalid year. Please enter a number between 2000 and 2100.\n";
-        std::cin >> day;
-    };
+        std::cerr << "Invalid year: you can add reminders starting from 2000 to 2100.\n";
+        return;
+    }
     std::cout << "Enter reminder's date month: ";
     std::cin >> month;
-    while (month < 1 or month > 12)
+    if (month < 1 || month > 12)
     {
-        std::cin.clear();                                                   // clear
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-        std::cout << "Invalid month. Please enter a number between 1 and 12.\n";
-        std::cin >> day;
-    };
+        std::cerr << "Invalid month.\n";
+        return;
+    }
     std::cout << "Enter reminder's date day: ";
     std::cin >> day;
-    while (day < 1 || day > 31)
+    if (day < 1 || day > 31)
     {
-        std::cin.clear();                                                   // clear
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-        std::cout << "Invalid day. Please enter a number between 1 and 31.\n";
-        std::cin >> day;
-    };
+        std::cerr << "Invalid day.\n";
+        return;
+    }
     std::tm date = make_tm(year, month, day);
 
     std::cin.ignore();
@@ -725,13 +718,8 @@ void Interface::addReminder(Calendar &calendar, std::string reminderFile)
         reminderRep = Reminder::EVERY_MONTH;
         break;
     default:
-        while (status < 0 or status > 3)
-        {
-            std::cin.clear();                                                   // clear
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore remaining input
-            std::cout << "Invalid input. Please enter a number between 0 and 3.\n";
-            std::cin >> status;
-        };
+        std::cerr << "Invalid repetition.\n";
+        return;
     }
 
     Reminder reminder(name, date, details, reminderRep);
