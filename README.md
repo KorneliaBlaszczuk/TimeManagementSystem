@@ -98,6 +98,6 @@ Docelowo nie wyświetlają się już ukończone zadania, ale można zobaczyć je
 
 ## Autorzy
 
-- Kornelia Błaszczuk - 3313coś
+- Kornelia Błaszczuk - 331361
 - Martyna Orzechowska - 331417
 - Aleksandra Raczyńska - 331428
