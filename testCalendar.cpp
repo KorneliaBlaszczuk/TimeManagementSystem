@@ -123,6 +123,34 @@ TEST(CalendarTest, AddingAndFilteringTasksChecksOrder)
     ASSERT_EQ(outputStr, expectedOutput);
 }
 
+TEST(CalendarTest, AddingAndFilteringRemindersChecksOrder)
+{
+    Calendar calendar;
+
+    std::tm reminderDate1 = make_tm(2024, 6, 5);
+    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
+
+    std::tm reminderDate2 = make_tm(2024, 6, 7);
+    Reminder rm2("Prepare Presentation", reminderDate2, "Not started yet", Reminder::NO);
+
+    calendar.addReminder(rm2);
+    calendar.addReminder(rm1);
+
+    std::ostringstream output;
+    for (const auto &reminder : calendar.filterReminders(make_tm(2024, 6, 4), make_tm(2024, 6, 8)))
+    {
+        reminder.print();
+    }
+    std::string expectedOutput = "2024-06-05          Finish Report       Work in progress                        No repetition.      \n2024-06-07          Prepare PresentationNot started yet                         No repetition.      \n";
+    testing::internal::CaptureStdout();
+    for (const auto &reminder : calendar.filterReminders(make_tm(2024, 6, 4), make_tm(2024, 6, 8)))
+    {
+        reminder.print();
+    }
+    std::string outputStr = testing::internal::GetCapturedStdout();
+    ASSERT_EQ(outputStr, expectedOutput);
+}
+
 TEST(CalendarTest, AddingAndFilteringReminders)
 {
     Calendar calendar;
@@ -133,34 +161,6 @@ TEST(CalendarTest, AddingAndFilteringReminders)
     std::tm reminderDate2 = make_tm(2024, 6, 7);
     Reminder rm2("Prepare Presentation", reminderDate2, "Not started yet", Reminder::NO);
 
-    calendar.addReminder(rm1);
-    calendar.addReminder(rm2);
-
-    std::ostringstream output;
-    for (const auto &reminder : calendar.filterReminders(make_tm(2024, 6, 4), make_tm(2024, 6, 6)))
-    {
-        reminder.print();
-    }
-    std::string expectedOutput = "Tu ma byc wynik\n";
-    testing::internal::CaptureStdout();
-    for (const auto &reminder : calendar.filterReminders(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
-    {
-        reminder.print();
-    }
-    std::string outputStr = testing::internal::GetCapturedStdout();
-    ASSERT_EQ(outputStr, expectedOutput);
-}
-
-TEST(CalendarTest, AddingAndFilteringRemindersCheckOrder)
-{
-    Calendar calendar;
-
-    std::tm reminderDate1 = make_tm(2024, 6, 5);
-    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
-
-    std::tm reminderDate2 = make_tm(2024, 6, 7);
-    Reminder rm2("Prepare Presentation", reminderDate2, "Not started yet", Reminder::NO);
-
     calendar.addReminder(rm2);
     calendar.addReminder(rm1);
 
@@ -169,9 +169,9 @@ TEST(CalendarTest, AddingAndFilteringRemindersCheckOrder)
     {
         reminder.print();
     }
-    std::string expectedOutput = "Tu ma byc wynik\n";
+    std::string expectedOutput = "2024-06-05          Finish Report       Work in progress                        No repetition.      \n";
     testing::internal::CaptureStdout();
-    for (const auto &reminder : calendar.filterReminders(make_tm(2024, 6, 5), make_tm(2024, 6, 6)))
+    for (const auto &reminder : calendar.filterReminders(make_tm(2024, 6, 4), make_tm(2024, 6, 6)))
     {
         reminder.print();
     }
@@ -249,7 +249,7 @@ TEST(CalendarTest, FilterReminders)
     calendar.addReminder(rm1);
     calendar.addReminder(rm2);
 
-    std::tm filterStart = make_tm(2024, 6, 4); // Adjusted start date
+    std::tm filterStart = make_tm(2024, 6, 4);        // Adjusted start date
     std::tm filterEnd = make_tm(2024, 6, 10, 23, 59); // Adjusted end date
     std::vector<Reminder> filteredReminders = calendar.filterReminders(filterStart, filterEnd);
     ASSERT_EQ(filteredReminders.size(), 2);

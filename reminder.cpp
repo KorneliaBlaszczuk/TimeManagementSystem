@@ -15,7 +15,7 @@ Reminder::Reminder(std::string const &name_ar, std::tm const &date, std::string 
 void Reminder::print() const
 {
     char dateBuffer[20];
-    strftime(dateBuffer, 20, "%Y-%m-%d %H:%M", &date);
+    strftime(dateBuffer, 20, "%Y-%m-%d", &date);
 
     std::cout << std::left << std::setw(20) << dateBuffer
               << std::setw(20) << name
@@ -99,9 +99,11 @@ void Reminder::saveToFile(std::ofstream &outFile) const
     outFile << "Repetition: " << repetition << "\n";
 }
 
-bool Reminder::loadFromFile(std::ifstream& inFile, Reminder& reminder) {
+bool Reminder::loadFromFile(std::ifstream &inFile, Reminder &reminder)
+{
     std::string line;
-    if (!std::getline(inFile, line) ||  !startsWith(line, "Reminder Name:")) {
+    if (!std::getline(inFile, line) || !startsWith(line, "Reminder Name:"))
+    {
         return false;
     }
 
@@ -119,22 +121,32 @@ bool Reminder::loadFromFile(std::ifstream& inFile, Reminder& reminder) {
 
     // Parse the date
     int year, month, day;
-    if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &year, &month, &day) != 3) {
+    if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &year, &month, &day) != 3)
+    {
         return false;
     }
     std::tm date = make_tm(year, month, day, 0, 0); // Assuming no time information is provided
 
     // Parse the repetition
     Repetition repetition;
-    if (rep == 0) {
+    if (rep == 0)
+    {
         repetition = NO;
-    } else if (rep == 1) {
+    }
+    else if (rep == 1)
+    {
         repetition = EVERYDAY;
-    } else if (rep == 2) {
+    }
+    else if (rep == 2)
+    {
         repetition = EVERY_WEEK;
-    } else if (rep == 3) {
+    }
+    else if (rep == 3)
+    {
         repetition = EVERY_MONTH;
-    } else {
+    }
+    else
+    {
         return false; // Unknown repetition value
     }
 

@@ -134,3 +134,16 @@ TEST(reminder_test, updateReminders_everyMon_diff_year)
     ASSERT_EQ(rm.getDate().tm_hour, 10);
     ASSERT_EQ(rm.getDate().tm_min, 0);
 }
+
+TEST(reminder_test, printReminder)
+{
+    std::tm reminderDate1 = make_tm(2024, 6, 5);
+    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
+    std::ostringstream output;
+    rm1.print();
+    std::string expectedOutput = "2024-06-05          Finish Report       Work in progress                        No repetition.      \n";
+    testing::internal::CaptureStdout();
+    rm1.print();
+    std::string outputStr = testing::internal::GetCapturedStdout();
+    ASSERT_EQ(outputStr, expectedOutput);
+}
