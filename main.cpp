@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     else
     {
         std::string name = argv[1];
-        if (name, "build/usersData/users.txt")
+        if (inUserList(name, "build/usersData/users.txt"))
         {
             User user(name);
             UserMode(user);
