@@ -45,3 +45,12 @@ TEST(testUser, print)
 
     EXPECT_EQ(oss.str(), "abc\n");
 }
+TEST(testUser, GetUser) {
+    std::stringstream input("korni\n");
+
+    std::streambuf* orig_cin = std::cin.rdbuf(input.rdbuf());
+    User user = getUser("testUsers.txt"); // made while compiling
+    std::cin.rdbuf(orig_cin);
+
+    EXPECT_EQ(user.getName(), "korni");
+}
