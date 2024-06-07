@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <fstream>
 
@@ -49,5 +50,15 @@ public:
     std::string getReminderFile() const
     {
         return reminderFile;
+    }
+
+    void print()
+    {
+        std::cout << getName() << std::endl;
+    }
+
+    bool operator==(const User& other) const
+    {
+        return getName() == other.getName();
     }
 };

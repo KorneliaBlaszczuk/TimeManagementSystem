@@ -3,17 +3,23 @@
 
 void Calendar::addEvent(const Event &event)
 {
-    events.push_back(event);
+    auto it = std::lower_bound(events.begin(), events.end(), event, [](const Event &a, const Event &b)
+                               { return tm_to_time_t(a.getDate()) < tm_to_time_t(b.getDate()); });
+    events.insert(it, event);
 }
 
 void Calendar::addTask(const Task &task)
 {
-    tasks.push_back(task);
+    auto it = std::lower_bound(tasks.begin(), tasks.end(), task, [](const Task &a, const Task &b)
+                               { return tm_to_time_t(a.getDate()) < tm_to_time_t(b.getDate()); });
+    tasks.insert(it, task);
 }
 
 void Calendar::addReminder(const Reminder &reminder)
 {
-    reminders.push_back(reminder);
+    auto it = std::lower_bound(reminders.begin(), reminders.end(), reminder, [](const Reminder &a, const Reminder &b)
+                               { return tm_to_time_t(a.getDate()) < tm_to_time_t(b.getDate()); });
+    reminders.insert(it, reminder);
 }
 
 std::vector<Event> Calendar::filterEvents(const std::tm &start, const std::tm &end) const

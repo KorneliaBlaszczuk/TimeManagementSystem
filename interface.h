@@ -1,11 +1,6 @@
 #pragma once
 #include "calendar.h"
-#include "event.h"
-#include "task.h"
-#include "reminder.h"
 #include "pomodoro.h"
-#include "plan.h"
-#include "functions.h"
 
 // Interface class
 class Interface
@@ -39,8 +34,6 @@ public:
     void addEvent(Calendar &calendar, std::string file);
 
     void addTask(Calendar &calendar, std::string fileTasks, std::string fileCompleted);
-
-    // TODO - all delete functions
 
     void deleteTask(Calendar &calendar, std::string taskFile);
 

@@ -1,5 +1,6 @@
 #include "modes.h"
 #include "functions.h"
+#include <algorithm>
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -47,9 +48,13 @@ int InitMode()
                 break;
             case 2:
                 std::cout << "\nTimeSystem Users:\n";
+                displayUsers();
+                std::cout << "\n";
                 break;
             case 3:
                 std::cout << "\nDeleting an user\n";
+                deleteUser();
+                std::cout << "\n";
                 break;
             case 4:
                 std::cout << "\nGoing into user mode\n";
@@ -289,6 +294,44 @@ User createUser()
     return newUser; // Assuming User constructor takes a user name
 }
 
+void displayUsers()
+{
+    std::vector<User> users = loadUsers();
+    for (auto& user : users)
+    {
+        user.print();
+    }
+}
+
+void deleteUser() {
+    std::string name;
+    std::cout << "\nEnter the user's name to delete: ";
+    std::getline(std::cin, name);
+
+    if (name.empty()) {
+        throw std::invalid_argument("User names are not empty.\n");
+    }
+
+    if (!inUserList(name)) {
+        throw std::invalid_argument("This member doesn't exist.\n");
+    }
+
+    std::vector<User> allUsers = loadUsers();
+    User userToRemove(name);
+
+    // Użycie std::remove_if zamiast std::remove
+    auto newEnd = std::remove_if(allUsers.begin(), allUsers.end(), [&](const User& user) {
+        return user == userToRemove;
+    });
+
+    // Usuń elementy od nowego końca do faktycznego końca wektora
+    allUsers.erase(newEnd, allUsers.end());
+
+    // Zapisz zaktualizowaną listę użytkowników
+    saveUsers(allUsers);
+
+    std::cout << "User was deleted.\n";
+}
 
 bool inUserList(std::string& checkName)
 {
@@ -308,7 +351,6 @@ bool inUserList(std::string& checkName)
     User uTemp(" ");
     while (loadFromFile(usersFile, uTemp))
     {
-        std::cout << uTemp.getName();
         if (uTemp.getName() == checkName)
         {
             return true;

@@ -13,6 +13,8 @@ int UserMode(User &user);
 int UserMenu(Interface &interface, Calendar &calendar, User &user);
 
 User getUser();
+void deleteUser();
+void displayUsers();
 
 bool inUserList(std::string& checkName);
 User createUser();
