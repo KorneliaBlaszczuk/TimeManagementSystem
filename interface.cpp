@@ -573,39 +573,44 @@ void Interface::addEvent(Calendar &calendar, std::string outFile)
 
     std::cout << "Enter event name: ";
     std::getline(std::cin, name);
+    if (name == "")
+    {
+        std::cerr << "Invalid name of event. It needs to have at least one character.\n";
+        return;
+    }
     std::cout << "Enter event start year: ";
     std::cin >> year;
     if (year < 2000 || year > 2100)
     {
-        std::cout << "Invalid year: you can add event from 2000 to 2100\n";
+        std::cerr << "Invalid year: you can add event from 2000 to 2100\n";
         return;
     }
     std::cout << "Enter event start month: ";
     std::cin >> month;
     if (month < 1 || month > 12)
     {
-        std::cout << "Invalid month\n";
+        std::cerr << "Invalid month\n";
         return;
     }
     std::cout << "Enter event start day: ";
     std::cin >> day;
     if (day < 1 || day > 31)
     {
-        std::cout << "Invalid day\n";
+        std::cerr << "Invalid day\n";
         return;
     }
     std::cout << "Enter event start hour: ";
     std::cin >> startHour;
     if (startHour < 0 || startHour > 24)
     {
-        std::cout << "Invalid start hour\n";
+        std::cerr << "Invalid start hour\n";
         return;
     }
     std::cout << "Enter event start minute: ";
     std::cin >> startMinute;
     if (startMinute < 0 || startMinute > 59)
     {
-        std::cout << "Invalid start minute\n";
+        std::cerr << "Invalid start minute\n";
         return;
     }
     std::tm start = make_tm(year, month, day, startHour, startMinute);
@@ -614,14 +619,14 @@ void Interface::addEvent(Calendar &calendar, std::string outFile)
     std::cin >> endHour;
     if (endHour < 0 || endHour > 24)
     {
-        std::cout << "Invalid end hour\n";
+        std::cerr << "Invalid end hour\n";
         return;
     }
     std::cout << "Enter event end minute: ";
     std::cin >> endMinute;
     if (endMinute < 0 || endMinute > 59)
     {
-        std::cout << "Invalid end minute\n";
+        std::cerr << "Invalid end minute\n";
         return;
     }
     std::tm end = make_tm(year, month, day, endHour, endMinute);
@@ -755,25 +760,30 @@ void Interface::addTask(Calendar &calendar, std::string taskFile, std::string co
 
     std::cout << "Enter task name: ";
     std::getline(std::cin, name);
+    if (name == "")
+    {
+        std::cerr << "Invalid name of task. It needs to have at least one character.\n";
+        return;
+    }
     std::cout << "Enter task date year: ";
     std::cin >> year;
     if (year < 2000 || year > 2100)
     {
-        std::cout << "Invalid year: you can add event from 2000 to 2100\n";
+        std::cerr << "Invalid year: you can add event from 2000 to 2100\n";
         return;
     }
     std::cout << "Enter task date month: ";
     std::cin >> month;
     if (month < 1 || month > 12)
     {
-        std::cout << "Invalid month\n";
+        std::cerr << "Invalid month\n";
         return;
     }
     std::cout << "Enter task date day: ";
     std::cin >> day;
     if (day < 1 || day > 31)
     {
-        std::cout << "Invalid day\n";
+        std::cerr << "Invalid day\n";
         return;
     }
     std::tm date = make_tm(year, month, day);
