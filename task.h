@@ -1,5 +1,6 @@
 #pragma once
 #include "plan.h"
+#include "user.h"
 #include <vector>
 #include <string>
 #include <ctime>
@@ -67,7 +68,7 @@ public:
 
     // Updates files according with files according to their status .
     // Takes vector of completed task as an argument.
-    static void removeCompleted(std::vector<Task> &recentCompleted);
+    static void removeCompleted(std::vector<Task> &recentCompleted, std::string compF);
 
 private:
     bool important;

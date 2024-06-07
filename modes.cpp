@@ -264,7 +264,6 @@ User createUser()
 {
     std::string newUserName;
     std::cout << "\nEnter the new user's name: ";
-    std::cin.ignore(); // Ignore newline left in buffer
     std::getline(std::cin, newUserName);
 
     if (newUserName.empty())
@@ -278,7 +277,16 @@ User createUser()
         throw std::invalid_argument("User already exists");
     }
 
-    return User(newUserName); // Assuming User constructor takes a user name
+    User newUser(newUserName);
+    // tutaj dodawanie do pliku
+
+    // First we load an existing ones into some vector
+    std::vector<User> allUsers = loadUsers();
+    allUsers.push_back(newUser);
+
+    saveUsers(allUsers);
+
+    return newUser; // Assuming User constructor takes a user name
 }
 
 
@@ -290,7 +298,7 @@ bool inUserList(std::string& checkName)
         return false;
     }
 
-    std::ifstream usersFile("users.txt");
+    std::ifstream usersFile("build/usersData/users.txt");
     if (!usersFile)
     {
         std::cerr << "No users available.\n";
@@ -300,6 +308,7 @@ bool inUserList(std::string& checkName)
     User uTemp(" ");
     while (loadFromFile(usersFile, uTemp))
     {
+        std::cout << uTemp.getName();
         if (uTemp.getName() == checkName)
         {
             return true;
@@ -307,4 +316,35 @@ bool inUserList(std::string& checkName)
     }
 
     return false;
+}
+
+std::vector<User> loadUsers()
+{
+    std::vector<User> users;
+    std::ifstream usersFile("build/usersData/users.txt");
+    if (!usersFile)
+    {
+        return users;
+    }
+
+    User user(" ");
+    while (loadFromFile(usersFile, user))
+    {
+        users.push_back(user);
+    }
+
+    usersFile.close();
+
+    return users;
+}
+
+void saveUsers(std::vector<User> users)
+{
+    std::ofstream file("build/usersData/users.txt"); // Open the file for writing
+    for (auto &user : users)
+    {
+        saveToFile(file, user);
+    }
+    file.close();
+
 }

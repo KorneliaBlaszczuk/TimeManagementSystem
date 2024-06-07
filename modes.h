@@ -16,3 +16,5 @@ User getUser();
 
 bool inUserList(std::string& checkName);
 User createUser();
+std::vector<User> loadUsers();
+void saveUsers(std::vector<User> users);
