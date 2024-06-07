@@ -12,15 +12,19 @@ int main(int argc, char *argv[])
     {
         InitMode();
     }
-    // here needs to be checked if user exists in file with users
-    // getting user name from program arguments
-    std::string name = argv[1];
-    // if user is correct ... needs to be done
-    // TO ZOSTAŁO W CASE ZROBIONE ALE MOŻNA ZMIENIĆ W ZALEŻNOŚCI OD POTRZEB
-    User user(name); // in final version it will be from file
-    UserMode(user);
-    // if name is incorrect then
-    std::cerr << "User of the given name is not existing in TimeSystem. Going into Init Mode.";
-    // and InitMode();
+    else
+    {
+        std::string name = argv[1];
+        if (name, "build/usersData/users.txt")
+        {
+            User user(name);
+            UserMode(user);
+        }
+        else
+        {
+            std::cerr << "User of the given name is not existing in TimeSystem. Going into Init Mode.";
+            InitMode();
+        }
+    }
     return 0;
-}
+};
