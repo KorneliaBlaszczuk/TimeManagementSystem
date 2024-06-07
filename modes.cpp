@@ -39,7 +39,7 @@ int InitMode()
             case 1:
                 std::cout << "\nCreating new user\n";
                 try {
-                    User newUser = createUser();
+                    User newUser = createUser("build/usersData/users.txt");
                     std::cout << "User created successfully.\n";
                     return UserMode(newUser);
                 } catch(const std::exception& e) {
@@ -48,18 +48,18 @@ int InitMode()
                 break;
             case 2:
                 std::cout << "\nTimeSystem Users:\n";
-                displayUsers();
+                displayUsers("build/usersData/users.txt");
                 std::cout << "\n";
                 break;
             case 3:
                 std::cout << "\nDeleting an user\n";
-                deleteUser();
+                deleteUser("build/usersData/users.txt");
                 std::cout << "\n";
                 break;
             case 4:
                 std::cout << "\nGoing into user mode\n";
                 try {
-                    User user = getUser();
+                    User user = getUser("build/usersData/users.txt");
                     return UserMode(user);
                 } catch(const std::exception& e) {
                     std::cerr << "Error: " << e.what() << '\n';
@@ -244,7 +244,7 @@ int UserMenu(Interface &interface, Calendar &calendar, User &user)
     }
 }
 
-User getUser()
+User getUser(std::string fileUsers)
 {
     std::string userName;
     std::cout << "\nEnter your user name: ";
@@ -256,7 +256,7 @@ User getUser()
     }
 
     User user(userName);
-    if (inUserList(userName, "build/usersData/users.txt"))
+    if (inUserList(userName, fileUsers))
         return user;
     else
     {
@@ -265,7 +265,7 @@ User getUser()
     }
 }
 
-User createUser()
+User createUser(std::string fileUsers)
 {
     std::string newUserName;
     std::cout << "\nEnter the new user's name: ";
@@ -277,7 +277,7 @@ User createUser()
     }
 
     // Check if the user already exists
-    if (inUserList(newUserName, "build/usersData/users.txt"))
+    if (inUserList(newUserName, fileUsers))
     {
         throw std::invalid_argument("User already exists");
     }
@@ -286,24 +286,24 @@ User createUser()
     // tutaj dodawanie do pliku
 
     // First we load an existing ones into some vector
-    std::vector<User> allUsers = loadUsers();
+    std::vector<User> allUsers = loadUsers("build/usersData/users.txt");
     allUsers.push_back(newUser);
 
-    saveUsers(allUsers);
+    saveUsers(allUsers, fileUsers);
 
     return newUser; // Assuming User constructor takes a user name
 }
 
-void displayUsers()
+void displayUsers(std::string fileUsers)
 {
-    std::vector<User> users = loadUsers();
+    std::vector<User> users = loadUsers(fileUsers);
     for (auto& user : users)
     {
         user.print();
     }
 }
 
-void deleteUser() {
+void deleteUser(std::string fileUsers) {
     std::string name;
     std::cout << "\nEnter the user's name to delete: ";
     std::getline(std::cin, name);
@@ -312,11 +312,11 @@ void deleteUser() {
         throw std::invalid_argument("User names are not empty.\n");
     }
 
-    if (!inUserList(name, "build/usersData/users.txt")) {
+    if (!inUserList(name, fileUsers)) {
         throw std::invalid_argument("This member doesn't exist.\n");
     }
 
-    std::vector<User> allUsers = loadUsers();
+    std::vector<User> allUsers = loadUsers(fileUsers);
     User userToRemove(name);
 
     // Użycie std::remove_if zamiast std::remove
@@ -328,7 +328,7 @@ void deleteUser() {
     allUsers.erase(newEnd, allUsers.end());
 
     // Zapisz zaktualizowaną listę użytkowników
-    saveUsers(allUsers);
+    saveUsers(allUsers, fileUsers);
 
     std::cout << "User was deleted.\n";
 }
@@ -360,10 +360,10 @@ bool inUserList(std::string& checkName, std::string fileUsers)
     return false;
 }
 
-std::vector<User> loadUsers()
+std::vector<User> loadUsers(std::string fileUsers)
 {
     std::vector<User> users;
-    std::ifstream usersFile("build/usersData/users.txt");
+    std::ifstream usersFile(fileUsers);
     if (!usersFile)
     {
         return users;
@@ -380,9 +380,9 @@ std::vector<User> loadUsers()
     return users;
 }
 
-void saveUsers(std::vector<User> users)
+void saveUsers(std::vector<User> users, std::string fileUsers)
 {
-    std::ofstream file("build/usersData/users.txt"); // Open the file for writing
+    std::ofstream file(fileUsers); // Open the file for writing
     for (auto &user : users)
     {
         saveToFile(file, user);

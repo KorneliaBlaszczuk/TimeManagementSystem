@@ -12,11 +12,11 @@ int UserMode(User &user);
 // function that takes care of navigating through menu and call proper functionalities of program
 int UserMenu(Interface &interface, Calendar &calendar, User &user);
 
-User getUser();
-void deleteUser();
-void displayUsers();
+User getUser(std::string fileUsers);
+void deleteUser(std::string fileUsers);
+void displayUsers(std::string fileUsers);
 
 bool inUserList(std::string& checkName, std::string fileUsers);
-User createUser();
-std::vector<User> loadUsers();
-void saveUsers(std::vector<User> users);
+User createUser(std::string fileUsers);
+std::vector<User> loadUsers(std::string fileUsers);
+void saveUsers(std::vector<User> users, std::string fileUsers);
