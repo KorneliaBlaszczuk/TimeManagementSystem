@@ -140,7 +140,7 @@ void Interface::displayTodayReminders(const Calendar &calendar)
     endOfDay.tm_hour = 23;
     endOfDay.tm_min = 59;
     endOfDay.tm_sec = 59;
-    auto reminders = calendar.filterEvents(today, endOfDay);
+    auto reminders = calendar.filterReminders(today, endOfDay);
     std::cout << std::left << std::setw(20) << "Date"
               << std::setw(20) << "Name"
               << std::setw(40) << "Details"

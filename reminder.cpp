@@ -66,7 +66,7 @@ std::string Reminder::getRepetitions() const
 
 void Reminder::changeDate(std::tm &time_now)
 {
-    if (tm_to_time_t(time_now) > tm_to_time_t(date))
+    while (tm_to_time_t(time_now) > tm_to_time_t(date))
     {
         switch (repetition)
         {
