@@ -11,7 +11,7 @@
 class Interface
 {
 public:
-    int openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT);
+    int openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT, std::string reminderF);
 
     void displayCalendar(const Calendar &calendar);
 

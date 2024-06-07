@@ -1,9 +1,14 @@
 #pragma once
 #include <string>
+#include <fstream>
 
 class User
 {
     std::string userName;
+    std::string eventsFile = "build/usersData/"+ userName + "_events.txt";
+    std::string taskFile = "build/usersData/" + userName + "_tasks.txt";
+    std::string compTaskFile = "build/usersData/" + userName + "_task_comp.txt";
+    std::string reminderFile = "build/usersData/" + userName + "_reminders.txt";
 
 public:
     User(std::string const &name) : userName(name)
@@ -25,4 +30,24 @@ public:
             userName = newName;
         }
     };
+
+    std::string getEventsFile() const
+    {
+        return eventsFile;
+    }
+
+    std::string getTaskFile() const
+    {
+        return taskFile;
+    }
+
+    std::string getCompTaskFile() const
+    {
+        return compTaskFile;
+    }
+
+    std::string getReminderFile() const
+    {
+        return reminderFile;
+    }
 };

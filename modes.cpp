@@ -1,4 +1,5 @@
 #include "modes.h"
+#include "functions.h"
 #include <iostream>
 #include <limits>
 #include <stdexcept>
@@ -10,6 +11,7 @@ int InitMode()
 {
     std::cout << "Welcome to TimeSystem.\n";
     int choice;
+    std::string userName;
     while (true)
     {
         std::cout << "Select an operation:\n"
@@ -35,6 +37,13 @@ int InitMode()
             {
             case 1:
                 std::cout << "\nCreating new user\n";
+                try {
+                    User newUser = createUser();
+                    std::cout << "User created successfully.\n";
+                    return UserMode(newUser);
+                } catch(const std::exception& e) {
+                    std::cerr << "Error creating user: " << e.what() << '\n';
+                }
                 break;
             case 2:
                 std::cout << "\nTimeSystem Users:\n";
@@ -44,10 +53,13 @@ int InitMode()
                 break;
             case 4:
                 std::cout << "\nGoing into user mode\n";
-                // first getting correct user name;
-                // then going into UserMode(User &user);
-                // after getting out of user mode, we need to finish program
-                return 0;
+                try {
+                    User user = getUser();
+                    return UserMode(user);
+                } catch(const std::exception& e) {
+                    std::cerr << "Error: " << e.what() << '\n';
+                    continue; // Go back to main menu
+                }
             case 5:
                 std::cout << "Goodbye!";
                 return 0;
@@ -74,25 +86,17 @@ int UserMode(User &user)
 
     std::string UserName = user.getName();
 
-    // creating name of files that will be used by that user
-    std::string eventFile, taskFile, compTaskFile, reminderFile;
-
-    eventFile = UserName + "_events.txt";
-    taskFile = UserName + "_tasks.txt";
-    compTaskFile = UserName + "_task_comp.txt";
-    reminderFile = UserName + "_reminders.txt";
-
-    interface.openFile(calendar, eventFile, taskFile, compTaskFile);
+    interface.openFile(calendar, user.getEventsFile(), user.getTaskFile(), user.getCompTaskFile(), user.getReminderFile());
     // @TODO tutaj będzie do openFile trzeba dopisać pewnie reminders
 
     std::cout << "Welcome back "
               << UserName;
-    int result = UserMenu(interface, calendar);
+    int result = UserMenu(interface, calendar, user);
     return result;
 }
 
 // function that takes care of navigating through menu and call proper functionalities of program
-int UserMenu(Interface &interface, Calendar &calendar)
+int UserMenu(Interface &interface, Calendar &calendar, User &user)
 {
     int choice;
     while (true)
@@ -162,10 +166,10 @@ int UserMenu(Interface &interface, Calendar &calendar)
                 interface.selectMonthAndDisplayEvents(calendar);
                 break;
             case 5:
-                interface.addEvent(calendar, "events.txt");
+                interface.addEvent(calendar, user.getEventsFile());
                 break;
             case 6:
-                interface.editEvent(calendar, "events.txt");
+                interface.editEvent(calendar, user.getEventsFile());
                 break;
             case 7:
                 std::cout << "\nTasks for today:\n";
@@ -186,10 +190,10 @@ int UserMenu(Interface &interface, Calendar &calendar)
                 interface.displayTasksCompleted(calendar);
                 break;
             case 11:
-                interface.addTask(calendar, "tasks.txt", "tasks_completed.txt");
+                interface.addTask(calendar, user.getTaskFile(), user.getCompTaskFile());
                 break;
             case 12:
-                interface.editTask(calendar, "tasks.txt", "tasks_completed.txt");
+                interface.editTask(calendar, user.getTaskFile(), user.getCompTaskFile());
                 break;
             case 13:
                 std::cout << "\nToday's reminders:\n";
@@ -200,22 +204,22 @@ int UserMenu(Interface &interface, Calendar &calendar)
                 interface.displayTomorrowReminders(calendar);
                 break;
             case 15:
-                interface.addReminder(calendar, "reminders.txt");
+                interface.addReminder(calendar, user.getReminderFile());
                 break;
             case 16:
-                interface.editReminder(calendar, "reminders.txt");
+                interface.editReminder(calendar, user.getReminderFile());
                 break;
             case 17:
                 interface.PomodoroRun();
                 break;
             case 18:
-                interface.deleteEvent(calendar, "events.txt");
+                interface.deleteEvent(calendar, user.getEventsFile());
                 break;
             case 19:
-                interface.deleteTask(calendar, "tasks.txt");
+                interface.deleteTask(calendar, user.getTaskFile());
                 break;
             case 20:
-                interface.deleteReminder(calendar, "reminders.txt");
+                interface.deleteReminder(calendar, user.getReminderFile());
                 break;
             case 21:
                 std::cout << "Goodbye!\n";
@@ -233,4 +237,74 @@ int UserMenu(Interface &interface, Calendar &calendar)
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
+}
+
+User getUser()
+{
+    std::string userName;
+    std::cout << "\nEnter your user name: ";
+    std::getline(std::cin, userName);
+    if (userName.empty())
+    {
+        std::cerr << "Invalid user name. It can't be empty.";
+        throw std::invalid_argument("Invalid user name");
+    }
+
+    User user(userName);
+    if (inUserList(userName))
+        return user;
+    else
+    {
+        std::cerr << "Incorrect user name.\n";
+        throw std::invalid_argument("Incorrect user name");
+    }
+}
+
+User createUser()
+{
+    std::string newUserName;
+    std::cout << "\nEnter the new user's name: ";
+    std::cin.ignore(); // Ignore newline left in buffer
+    std::getline(std::cin, newUserName);
+
+    if (newUserName.empty())
+    {
+        throw std::invalid_argument("User name cannot be empty");
+    }
+
+    // Check if the user already exists
+    if (inUserList(newUserName))
+    {
+        throw std::invalid_argument("User already exists");
+    }
+
+    return User(newUserName); // Assuming User constructor takes a user name
+}
+
+
+bool inUserList(std::string& checkName)
+{
+    if (checkName.empty())
+    {
+        std::cerr << "Empty username.\n";
+        return false;
+    }
+
+    std::ifstream usersFile("users.txt");
+    if (!usersFile)
+    {
+        std::cerr << "No users available.\n";
+        return false;
+    }
+
+    User uTemp(" ");
+    while (loadFromFile(usersFile, uTemp))
+    {
+        if (uTemp.getName() == checkName)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

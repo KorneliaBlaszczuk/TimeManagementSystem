@@ -10,4 +10,9 @@ int InitMode();
 int UserMode(User &user);
 
 // function that takes care of navigating through menu and call proper functionalities of program
-int UserMenu(Interface &interface, Calendar &calendar);
+int UserMenu(Interface &interface, Calendar &calendar, User &user);
+
+User getUser();
+
+bool inUserList(std::string& checkName);
+User createUser();

@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 
-int Interface::openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT)
+int Interface::openFile(Calendar &calendar, std::string eventF, std::string tasksF, std::string completedT, std::string reminderF)
 {
     std::ifstream eventsFile(eventF);
     if (!eventsFile)
@@ -64,6 +64,24 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
         completedFile.close();
 
         Task::removeCompleted(recentCompleted);
+    }
+
+    // Load Reminders
+    std::ifstream reminderFile(reminderF);
+    if (!reminderFile)
+    {
+        std::cerr << "No reminders loaded.\n";
+    }
+    else
+    {
+        Reminder reminder(" ", {}, "", Reminder::EVERYDAY); // for now
+        while (Reminder::loadFromFile(reminderFile, reminder))
+        {
+            calendar.addReminder(reminder);
+            std::cout << reminder.getName() ;
+        }
+
+        reminderFile.close();
     }
 
     return 0;
@@ -558,7 +576,22 @@ void Interface::editReminder(Calendar &calendar, std::string reminderFile)
             if (!details.empty())
                 reminder.setDescription(details);
 
-            //@TODO editing status in reminder and files updating ...
+            std::ofstream file(reminderFile); // Open the file for writing
+
+            if (!file)
+            {
+                std::cerr << "Couldn't edit reminders.txt.\n";
+            }
+
+            for (const auto &reminder : calendar.reminders)
+            {
+                reminder.saveToFile(file);
+            }
+
+            file.close();
+
+            std::cout << "Reminder updated successfully.\n";
+            return;
         }
     }
     std::cout << "Reminder not found.";
@@ -1001,5 +1034,19 @@ void Interface::deleteReminder(Calendar &calendar, std::string reminderFile)
         std::cout << "No reminder found with the given name and date." << std::endl;
     }
 
-    // TODO to samo co powyżej jak będzie gotowe reminders
+    std::ofstream file(reminderFile); // Open the file for writing
+
+    if (!file)
+    {
+        std::cerr << "Error opening file for writing\n";
+    }
+
+    // Save each event to the file
+    for (const auto &reminder : calendar.reminders)
+    {
+        reminder.saveToFile(file);
+    }
+
+    // Close the file
+    file.close();
 }
