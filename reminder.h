@@ -36,4 +36,5 @@ public:
 
     // @TODO
     void saveToFile(std::ofstream &outFile) const;
+    static bool loadFromFile(std::ifstream& inFile, Reminder& reminder);
 };

@@ -1,7 +1,10 @@
 #include "functions.h"
+#include "plan.h"
+#include "user.h"
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <fstream>
 
 std::time_t tm_to_time_t(const std::tm &t)
 {
@@ -110,3 +113,23 @@ bool compareTm(const std::tm &tm1, const std::tm &tm2)
            tm1.tm_mon == tm2.tm_mon &&
            tm1.tm_mday == tm2.tm_mday;
 }
+
+void saveToFile(std::ofstream &outFile, User &user)
+{
+    outFile << "User name: " << user.getName() << "\n";
+};
+
+bool loadFromFile(std::ifstream &inFile, User& user)
+{
+    std::string line;
+    // zmienić jednak może te startswith ogólnie dać do functions.h
+    if (!std::getline(inFile, line) || !Plan::startsWith(line, "User name: "))
+    {
+        return false;
+    }
+
+    std::string name = line.substr(12);
+
+    user = User(name);
+    return true;
+};

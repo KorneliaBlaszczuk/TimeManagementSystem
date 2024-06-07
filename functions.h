@@ -1,4 +1,5 @@
 #pragma once
+#include "user.h"
 #include <ctime>
 #include <string>
 
@@ -23,3 +24,6 @@ void getCurrentMonthRange(std::tm &monthStart, std::tm &monthEnd);
 bool isOlderThanAMonth(const std::tm& date);
 
 bool compareTm(const std::tm &tm1, const std::tm &tm2);
+
+void saveToFile(std::ofstream &outFile, User &user);
+bool loadFromFile(std::ifstream &inFile, User& user);

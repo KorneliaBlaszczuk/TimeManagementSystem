@@ -92,3 +92,48 @@ void Reminder::saveToFile(std::ofstream &outFile) const
     outFile << "Details: " << description << "\n";
     outFile << "Repetition: " << repetition << "\n";
 }
+
+bool Reminder::loadFromFile(std::ifstream& inFile, Reminder& reminder) {
+    std::string line;
+    if (!std::getline(inFile, line) ||  !startsWith(line, "Reminder Name:")) {
+        return false;
+    }
+
+    std::string name = line.substr(15); // Length of "Reminder Name: "
+
+    std::getline(inFile, line);
+    std::string dateStr = line.substr(6); // Length of "Date: "
+
+    std::getline(inFile, line);
+    std::string description = line.substr(9); // Length of "Details: "
+
+    std::getline(inFile, line);
+    std::string repetitionStr = line.substr(12); // Length of "Repetition: "
+    int rep = std::stoi(repetitionStr);
+
+    // Parse the date
+    int year, month, day;
+    if (std::sscanf(dateStr.c_str(), "%d-%d-%d", &year, &month, &day) != 3) {
+        return false;
+    }
+    std::tm date = make_tm(year, month, day, 0, 0); // Assuming no time information is provided
+
+    // Parse the repetition
+    Repetition repetition;
+    if (rep == 0) {
+        repetition = NO;
+    } else if (rep == 1) {
+        repetition = EVERYDAY;
+    } else if (rep == 2) {
+        repetition = EVERY_WEEK;
+    } else if (rep == 3) {
+        repetition = EVERY_MONTH;
+    } else {
+        return false; // Unknown repetition value
+    }
+
+    reminder = Reminder(name, date, description, repetition);
+    // Update of reminder date
+    reminder.changeDate(date);
+    return true;
+}
