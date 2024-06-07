@@ -64,7 +64,7 @@ std::vector<Reminder> Calendar::filterReminders(const std::tm &start, const std:
     for (const auto &reminder : reminders)
     {
         std::time_t reminder_time = tm_to_time_t(reminder.getDate());
-        if ((difftime(reminder_time, start_time) >= 0 && difftime(reminder_time, end_time) <= 0))
+        if (difftime(reminder_time, start_time) >= 0 && difftime(reminder_time, end_time) <= 0)
         {
             result.push_back(reminder);
         }
