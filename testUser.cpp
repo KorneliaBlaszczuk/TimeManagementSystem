@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "user.h"
+#include "modes.h"
 
 TEST(testUser, ctor_user)
 {
@@ -43,5 +44,4 @@ TEST(testUser, print)
     std::cout.rdbuf(oldCoutBuffer);
 
     EXPECT_EQ(oss.str(), "abc\n");
-
 }
