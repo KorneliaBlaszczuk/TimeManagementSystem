@@ -63,7 +63,7 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
 
         completedFile.close();
 
-        Task::removeCompleted(recentCompleted);
+        Task::removeCompleted(recentCompleted, completedT);
     }
 
     // Load Reminders
@@ -521,7 +521,7 @@ void Interface::editTask(Calendar &calendar, std::string taskFile, std::string c
 
             completedFile.close();
 
-            Task::removeCompleted(completed);
+            Task::removeCompleted(completed, completedTaskFile);
 
             std::cout << "Task updated successfully.\n";
             return;
@@ -891,7 +891,7 @@ void Interface::addTask(Calendar &calendar, std::string taskFile, std::string co
 
     fileCompleted.close();
 
-    Task::removeCompleted(completed);
+    Task::removeCompleted(completed, completedTaskFile);
 
     std::cout << "Task saved to file\n";
 }

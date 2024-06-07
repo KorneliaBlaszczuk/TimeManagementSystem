@@ -127,9 +127,9 @@ void Task::setStatus(const Status &newStatus)
     progressStatus = newStatus;
 }
 
-void Task::removeCompleted(std::vector<Task> &recentCompleted)
+void Task::removeCompleted(std::vector<Task> &recentCompleted, std::string compF)
 {
-    std::ofstream completedChecked("tasks_completed.txt");
+    std::ofstream completedChecked(compF);
     for (const auto &task : recentCompleted)
     {
         task.saveToFile(completedChecked);

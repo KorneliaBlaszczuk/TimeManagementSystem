@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     // getting user name from program arguments
     std::string name = argv[1];
     // if user is correct ... needs to be done
+    // TO ZOSTAŁO W CASE ZROBIONE ALE MOŻNA ZMIENIĆ W ZALEŻNOŚCI OD POTRZEB
     User user(name); // in final version it will be from file
     UserMode(user);
     // if name is incorrect then

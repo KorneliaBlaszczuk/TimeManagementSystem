@@ -128,7 +128,7 @@ bool loadFromFile(std::ifstream &inFile, User& user)
         return false;
     }
 
-    std::string name = line.substr(12);
+    std::string name = line.substr(11);
 
     user = User(name);
     return true;
