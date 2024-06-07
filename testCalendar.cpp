@@ -303,3 +303,63 @@ TEST(CalendarTest, FilterTasksBoundary)
     ASSERT_EQ(filteredTasks.size(), 1);
     EXPECT_EQ(filteredTasks[0].getName(), "Finish Report");
 }
+
+TEST(CalendarTest, FilterRemindersBoundary)
+{
+    Calendar calendar;
+
+    std::tm reminderDate1 = make_tm(2024, 6, 10);
+    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
+
+    calendar.addReminder(rm1);
+    ASSERT_EQ(calendar.reminders.size(), 1);
+    EXPECT_EQ(calendar.reminders[0].getName(), "Finish Report");
+
+    std::tm filterStart = make_tm(2024, 6, 10);
+    std::tm filterEnd = make_tm(2024, 6, 10);
+    std::vector<Reminder> filteredReminders = calendar.filterReminders(filterStart, filterEnd);
+
+    ASSERT_EQ(filteredReminders.size(), 1);
+    EXPECT_EQ(filteredReminders[0].getName(), "Finish Report");
+}
+
+TEST(CalendarTest, removeEvent)
+{
+    Calendar calendar;
+    std::tm start = make_tm(2023, 6, 10, 10, 30);
+    std::tm end = make_tm(2023, 6, 10, 12, 0);
+    Event event("Meeting", start, end, "Conference Room", {"John Doe"});
+
+    calendar.addEvent(event);
+    ASSERT_EQ(calendar.events.size(), 1);
+    EXPECT_EQ(calendar.events[0].getName(), "Meeting");
+    calendar.removeEvent("Meeting", start);
+    ASSERT_EQ(calendar.events.size(), 0);
+}
+
+TEST(CalendarTest, removeTask)
+{
+    Calendar calendar;
+    std::tm date = make_tm(2023, 6, 10);
+    Task task("Finish Report", date, true, "In Progress", Task::PENDING);
+
+    calendar.addTask(task);
+    ASSERT_EQ(calendar.tasks.size(), 1);
+    EXPECT_EQ(calendar.tasks[0].getName(), "Finish Report");
+    calendar.removeTask("Finish Report", date);
+    ASSERT_EQ(calendar.tasks.size(), 0);
+}
+
+TEST(CalendarTest, removeReminder)
+{
+    Calendar calendar;
+
+    std::tm reminderDate1 = make_tm(2024, 6, 5);
+    Reminder rm1("Finish Report", reminderDate1, "Work in progress", Reminder::NO);
+
+    calendar.addReminder(rm1);
+    ASSERT_EQ(calendar.reminders.size(), 1);
+    EXPECT_EQ(calendar.reminders[0].getName(), "Finish Report");
+    calendar.removeReminder("Finish Report", reminderDate1);
+    ASSERT_EQ(calendar.reminders.size(), 0);
+}
