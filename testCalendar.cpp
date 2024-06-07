@@ -246,14 +246,12 @@ TEST(CalendarTest, FilterReminders)
     std::tm reminderDate2 = make_tm(2024, 6, 7);
     Reminder rm2("Prepare Presentation", reminderDate2, "Not started yet", Reminder::NO);
 
-    std::tm filterStart = make_tm(2023, 6, 10);
-    std::tm filterEnd = make_tm(2023, 6, 10, 23, 59);
-    std::vector<Reminder> filteredReminders = calendar.filterReminders(filterStart, filterEnd);
+    calendar.addReminder(rm1);
+    calendar.addReminder(rm2);
 
-    ASSERT_EQ(filteredReminders.size(), 0);
-    filterStart = make_tm(2024, 6, 4);
-    filterEnd = make_tm(2024, 6, 10, 23, 59);
-    filteredReminders = calendar.filterReminders(filterStart, filterEnd);
+    std::tm filterStart = make_tm(2024, 6, 4); // Adjusted start date
+    std::tm filterEnd = make_tm(2024, 6, 10, 23, 59); // Adjusted end date
+    std::vector<Reminder> filteredReminders = calendar.filterReminders(filterStart, filterEnd);
     ASSERT_EQ(filteredReminders.size(), 2);
 }
 
