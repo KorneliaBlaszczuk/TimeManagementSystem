@@ -71,6 +71,8 @@ Po uruchomieniu programu, użytkownik widzi menu startowe użytkownika. Może st
 Nastęnie zostaje uruchomiona część główna
 programu - już dla konkretnego użytkownika (z jego danymi, ponieważ program zapamiętuje wydarzenia, zadania oraz przypomnienia).
 
+Jezeli uzytkownik ma juz wcześniej korzystał z programu moze on bezpośrednio przejsc do menu zwiazenego z zarządzaniem czasem. W tym celu uruchamiając program z linii polecenia nalezy podać nazwę uzytkownika.
+
 ### Działanie Programu
 
 Użytkownik może przeglądać swoje plany, w tym:
@@ -92,7 +94,7 @@ Docelowo nie wyświetlają się już ukończone zadania, ale można zobaczyć je
    wybrania właśnie tego sposobu przechowywania danych użytkownika.
 3. **Funkcjonalność 'Pomodoro'**:
    - Z powodu implementacji jaką stworzyłyśmy, nasz program działa tylko na systemach Unix, ponadto dźwięk i jego
-   słyszalność zależą od systemu, jaki posiada użytkownik.
+   słyszalność zależą od środowiska, jaki posiada użytkownik.
 
 ## Autorzy
 
