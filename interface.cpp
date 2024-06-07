@@ -515,7 +515,53 @@ void Interface::editTask(Calendar &calendar, std::string taskFile, std::string c
 
 void Interface::editReminder(Calendar &calendar, std::string reminderFile)
 {
-    return;
+    std::string name;
+    std::cout << "Enter the name of the repeating reminder to edit: ";
+    std::getline(std::cin, name);
+    for (auto &reminder : calendar.reminders)
+    {
+        if (reminder.getName() == name)
+        {
+            std::string newName, details, input;
+
+            int year, month, day;
+            Task::Status status;
+            std::tm date = reminder.getDate();
+
+            // Edit name
+            std::cout << "Enter new name (or press Enter to keep current): ";
+            std::getline(std::cin, newName);
+            if (!newName.empty())
+                reminder.setName(newName);
+
+            // Edit date
+            std::cout << "Enter new year (or press Enter to keep current): ";
+            std::getline(std::cin, input);
+            if (!input.empty())
+                date.tm_year = std::stoi(input) - 1900;
+
+            std::cout << "Enter new month: ";
+            std::getline(std::cin, input);
+            if (!input.empty())
+                date.tm_mon = std::stoi(input) - 1;
+
+            std::cout << "Enter new day: ";
+            std::getline(std::cin, input);
+            if (!input.empty())
+                date.tm_mday = std::stoi(input);
+
+            reminder.setDate(date);
+
+            // Edit details
+            std::cout << "Enter new progress note (or press Enter to keep current): ";
+            std::getline(std::cin, details);
+            if (!details.empty())
+                reminder.setDescription(details);
+
+            //@TODO editing status in reminder and files updating ...
+        }
+    }
+    std::cout << "Reminder not found.";
 }
 
 void Interface::addEvent(Calendar &calendar, std::string outFile)

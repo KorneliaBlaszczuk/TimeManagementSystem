@@ -85,7 +85,8 @@ int UserMode(User &user)
     interface.openFile(calendar, eventFile, taskFile, compTaskFile);
     // @TODO tutaj będzie do openFile trzeba dopisać pewnie reminders
 
-    std::cout << "Welcome back\n";
+    std::cout << "Welcome back "
+              << UserName;
     int result = UserMenu(interface, calendar);
     return result;
 }
