@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            std::cerr << "User of the given name is not existing in TimeSystem. Going into Init Mode.";
+            std::cerr << "User of the given name is not existing in TimeSystem. Going into Init Mode.\n";
             InitMode();
         }
     }

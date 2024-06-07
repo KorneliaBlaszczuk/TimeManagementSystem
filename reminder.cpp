@@ -101,6 +101,7 @@ void Reminder::saveToFile(std::ofstream &outFile) const
 
 bool Reminder::loadFromFile(std::ifstream &inFile, Reminder &reminder)
 {
+    std::tm time_now = getCurrentDate();
     std::string line;
     if (!std::getline(inFile, line) || !startsWith(line, "Reminder Name:"))
     {
@@ -152,6 +153,6 @@ bool Reminder::loadFromFile(std::ifstream &inFile, Reminder &reminder)
 
     reminder = Reminder(name, date, description, repetition);
     // Update of reminder date
-    reminder.changeDate(date);
+    reminder.changeDate(time_now);
     return true;
 }

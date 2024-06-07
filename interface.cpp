@@ -78,7 +78,6 @@ int Interface::openFile(Calendar &calendar, std::string eventF, std::string task
         while (Reminder::loadFromFile(reminderFile, reminder))
         {
             calendar.addReminder(reminder);
-            std::cout << reminder.getName();
         }
 
         reminderFile.close();
