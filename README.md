@@ -1,4 +1,100 @@
 # Time Management System
+## ENG
+
+## Project Description
+
+The Time Management System is an application that helps users plan their day. The app allows users to create events, manage tasks, and track progress, aiming to increase the user's efficiency. Additionally, it includes a Pomodoro feature, which supports users in properly dividing their time between work/study and rest. This time division is essential for maintaining a healthy work-life balance. The application was primarily designed for students but is versatile enough to be useful for adults and teenagers who want to gain better control over their time.
+
+## Goal
+
+The main goal of the system is to assist users in organizing their day to maximize available time for studying, working, resting, and other activities.
+
+## Features
+
+1. **Creating Events**:
+   - Name, start and end times, location, attendees.
+   - Operations: adding, removing, modifying, viewing.
+
+2. **Creating Tasks (To-Do)**:
+   - Name, task date, completion progress, priority, task notes, subtasks.
+   - Operations: adding, removing, modifying, viewing.
+
+3. **Creating Reminders**:
+   - Name, date, description, repetition.
+   - Operations: adding, removing, modifying, viewing.
+
+4. **Collaboration between Multiple Users**:
+   - The application allows multiple users, created by name.
+
+5. **Pomodoro**:
+   - Manages work sessions and breaks according to Pomodoro principles.
+
+## Classes and Structures
+
+### Main Classes
+
+- **Plan**:
+  - Attributes: plan name, base date.
+  - This is the base class for Event, Task, and Reminder.
+
+- **Task**:
+  - Attributes: name, date, importance, progress note, progress status, subtasks.
+  - Subtask structure: name, importance, subtask status.
+  - Subtasks have been modified so they don't accept additional subtasks.
+
+- **Event**:
+  - Attributes: name, start, end, location, attendees.
+  - Since around 90% of events are one-day events, the app doesn't allow multi-day events. However, modifying an event allows changing the end date entirely. This design saves users time.
+
+- **Reminder**:
+  - Attributes: name, date, details, repeat.
+
+- **Pomodoro**:
+  - Attributes: min - session time.
+  - Methods: a timer counts down the time.
+  - The terminal displays only the time during the Pomodoro session so that users can focus entirely on their task without distractions.
+
+- **User**:
+  - Attributes: name.
+  - Duplicate names are not allowed.
+  - Users do not have passwords due to time constraints during the project, which prevented ensuring secure login data with encryption.
+
+## Program Operation
+
+### Running the Program
+
+Run the program in the folder containing the program files: `./build/TimeSystem` + the optional username if desired.
+Once the program is launched, the user sees the main menu. They can create a user account, see existing user accounts, delete their account, go to their account, or exit the program.
+Then the main part of the program will launch, personalized for the specific user (with their data, including events, tasks, and reminders).
+
+### Program Operation
+
+The user can view and manage their plans, including:
+- **Calendar with events**: Can view today's events, events for a specific week or month, or any time period (in months). They can add, modify, and remove events.
+- **Tasks**: Can view today's tasks (and overdue ones), tasks for a specific week or month, completed tasks for the entire month, and can add, modify, and remove tasks.
+  - Completed tasks are no longer displayed, but users can see them as a summary of their achievements for the month (often serving as motivation to continue working).
+- **Reminders**: Displays today's and tomorrow's reminders, with options to add, modify, or remove reminders.
+- The user can also start a study session using the Pomodoro method.
+
+## Challenges Encountered During the Project and Assumptions
+
+1. **User Interface**:
+   - Initially, we considered using QT, but we unanimously decided to focus on a better implementation and adding more features. Additionally, installing QT in our environments proved to be problematic.
+
+2. **Storing Notes and Files**:
+   - Currently, all files related to the program are stored in the `build` folder as `.txt` files. We initially considered using `.json` files, but the simplicity of handling `.txt` files convinced us to go with this method for storing user data.
+
+3. **Pomodoro Functionality**:
+   - Due to the way we implemented it, our program only works on Unix systems. Additionally, the sound and its audibility depend on the user's environment.
+
+## Authors
+
+- Kornelia Błaszczuk 
+- Martyna Orzechowska 
+- Aleksandra Raczyńska
+
+
+## PL
 
 ## Opis Projektu
 
@@ -99,6 +195,6 @@ Docelowo nie wyświetlają się już ukończone zadania, ale można zobaczyć je
 
 ## Autorzy
 
-- Kornelia Błaszczuk - 331361
-- Martyna Orzechowska - 331417
-- Aleksandra Raczyńska - 331428
+- Kornelia Błaszczuk
+- Martyna Orzechowska 
+- Aleksandra Raczyńska 
